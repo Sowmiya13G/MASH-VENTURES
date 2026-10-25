@@ -1,9 +1,10 @@
 import Image from "next/image";
 import type { Character } from "@/data/characters";
+import Character3DModel from "./Character3DModel";
 
 /**
- * Shows the character photo when one has been added (hasImage: true and a file at
- * /public/characters/<slug>.webp). Until then it renders an original, abstract robot silhouette.
+ * Shows the interactive 3D character model when one has been added (hasImage: true).
+ * Until then it renders an original, abstract robot silhouette.
  */
 export default function CharacterVisual({
   character,
@@ -15,18 +16,7 @@ export default function CharacterVisual({
   sizes?: string;
 }) {
   if (character.hasImage) {
-    return (
-      <div className="relative h-full w-full bg-charcoal flex items-center justify-center p-2">
-        <Image
-          src={`/characters/${character.slug}.jpg`}
-          alt={`${character.name} robotic character by MASH VENTURES`}
-          fill
-          sizes={sizes}
-          priority={priority}
-          className="object-contain object-center transition duration-500 group-hover:scale-105 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
-        />
-      </div>
-    );
+    return <Character3DModel character={character} interactive />;
   }
 
   const soon = !character.available;
