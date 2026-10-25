@@ -1,9 +1,9 @@
 import Image from "next/image";
 import type { Character } from "@/data/characters";
-import Character3DModel from "./Character3DModel";
+// import Character3DModel from "./Character3DModel";
 
 /**
- * Shows the interactive 3D character model when one has been added (hasImage: true).
+ * Shows the character image when one has been added (hasImage: true).
  * Until then it renders an original, abstract robot silhouette.
  */
 export default function CharacterVisual({
@@ -16,7 +16,22 @@ export default function CharacterVisual({
   sizes?: string;
 }) {
   if (character.hasImage) {
+    /* 3D Model Option (Commented):
     return <Character3DModel character={character} interactive />;
+    */
+
+    return (
+      <div className="relative h-full w-full flex items-center justify-center p-3">
+        <Image
+          src={`/characters/${character.slug}.png`}
+          alt={`${character.name} robotic character by MASH VENTURES`}
+          fill
+          sizes={sizes}
+          priority={priority}
+          className="object-contain object-center transition duration-500 group-hover:scale-105 drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
+        />
+      </div>
+    );
   }
 
   const soon = !character.available;
