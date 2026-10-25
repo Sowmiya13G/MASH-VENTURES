@@ -4,13 +4,15 @@ import { experiences } from "@/data/experiences";
 import { availableCharacters } from "@/data/characters";
 import { container } from "@/components/ui/styles";
 
+import MashLogo from "@/components/ui/MashLogo";
+
 export default function Footer() {
   const wa = whatsappLink();
   return (
     <footer className="border-t border-white/10 bg-black">
       <div className={`${container} grid gap-12 py-16 md:grid-cols-4`}>
         <div className="md:col-span-1">
-          <p className="text-xl font-bold tracking-[0.18em]">MASH VENTURES</p>
+          <MashLogo variant="full" size="md" />
           <p className="mt-4 text-sm uppercase leading-relaxed tracking-widest text-chrome/70">
             {SITE.taglinePrimary}
             <br />

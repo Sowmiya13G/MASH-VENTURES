@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { ChevronDown } from "lucide-react";
 import { SITE } from "@/lib/site";
 import { btnGhost, btnPrimary, container } from "@/components/ui/styles";
+import MashLogo from "@/components/ui/MashLogo";
 
 /** Staggers the CSS entrance animation: <p className="fade-up" style={delay(0.2)}> */
 const delay = (seconds: number) => ({ "--d": `${seconds}s` }) as CSSProperties;
@@ -39,42 +40,65 @@ export default function Hero() {
       </div>
 
       <div className={`${container} pb-24 pt-32`}>
-        <p className="fade-up mb-6 text-xs font-semibold uppercase tracking-[0.35em] text-mash-red sm:text-sm">
-          Robotic Character Experiences in India
-        </p>
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+          <div className="lg:col-span-7">
+            <p className="fade-up mb-6 text-xs font-semibold uppercase tracking-[0.35em] text-mash-red sm:text-sm">
+              Robotic Character Experiences in India
+            </p>
 
-        <h1
-          id="hero-title"
-          style={delay(0.1)}
-          className="fade-up max-w-5xl text-5xl font-bold uppercase leading-[0.98] tracking-tight sm:text-7xl lg:text-8xl"
-        >
-          <span className="text-chrome-gradient">More Than Characters.</span>
-          <br />
-          <span className="text-mash-red">Extraordinary Experiences.</span>
-        </h1>
+            <h1
+              id="hero-title"
+              style={delay(0.1)}
+              className="fade-up max-w-5xl text-5xl font-bold uppercase leading-[0.98] tracking-tight sm:text-7xl lg:text-7xl"
+            >
+              <span className="text-chrome-gradient">More Than Characters.</span>
+              <br />
+              <span className="text-mash-red">Extraordinary Experiences.</span>
+            </h1>
 
-        <p
-          style={delay(0.3)}
-          className="fade-up mt-8 text-lg font-semibold uppercase tracking-[0.2em] text-white sm:text-xl"
-        >
-          {SITE.taglinePrimary}
-          <br />
-          <span className="text-chrome/80">{SITE.taglineSecondary}</span>
-        </p>
+            <p
+              style={delay(0.3)}
+              className="fade-up mt-8 text-lg font-semibold uppercase tracking-[0.2em] text-white sm:text-xl"
+            >
+              {SITE.taglinePrimary}
+              <br />
+              <span className="text-chrome/80">{SITE.taglineSecondary}</span>
+            </p>
 
-        <p style={delay(0.45)} className="fade-up mt-6 max-w-2xl text-base leading-relaxed text-chrome/80 sm:text-lg">
-          Not just a character. Not just an appearance. An experience that commands attention. We bring futuristic
-          robotic characters to life through immersive interactions, spectacular appearances and unforgettable
-          audience experiences.
-        </p>
+            <p style={delay(0.45)} className="fade-up mt-6 max-w-2xl text-base leading-relaxed text-chrome/80 sm:text-lg">
+              Not just a character. Not just an appearance. An experience that commands attention. We bring futuristic
+              robotic characters to life through immersive interactions, spectacular appearances and unforgettable
+              audience experiences.
+            </p>
 
-        <div style={delay(0.6)} className="fade-up mt-10 flex flex-col gap-4 sm:flex-row">
-          <Link href="/characters" className={btnPrimary}>
-            Explore Our Characters
-          </Link>
-          <Link href="/contact#book" className={btnGhost}>
-            Book an Experience
-          </Link>
+            <div style={delay(0.6)} className="fade-up mt-10 flex flex-col gap-4 sm:flex-row">
+              <Link href="/characters" className={btnPrimary}>
+                Explore Our Characters
+              </Link>
+              <Link href="/contact#book" className={btnGhost}>
+                Book an Experience
+              </Link>
+            </div>
+          </div>
+
+          <div
+            style={delay(0.2)}
+            className="fade-up flex justify-center lg:col-span-5 lg:justify-end"
+          >
+            <div className="relative rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-6 backdrop-blur-sm sm:p-10 shadow-2xl">
+              <div className="absolute -top-3 left-6 rounded bg-mash-red px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white shadow-md">
+                Official Identity
+              </div>
+              <MashLogo variant="full" size="hero" priority />
+              <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4 text-xs font-semibold tracking-widest text-chrome/60 uppercase">
+                <span>Cybernetic Core</span>
+                <span className="flex items-center gap-1.5 text-mash-red">
+                  <span className="h-2 w-2 rounded-full bg-mash-red animate-ping" />
+                  Active
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

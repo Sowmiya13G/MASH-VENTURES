@@ -8,6 +8,8 @@ import clsx from "clsx";
 import { NAV_LINKS, SITE } from "@/lib/site";
 import { btnPrimary } from "@/components/ui/styles";
 
+import MashLogo from "@/components/ui/MashLogo";
+
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -41,12 +43,9 @@ export default function Navbar() {
         scrolled || open ? "border-b border-white/10 bg-charcoal/90 backdrop-blur-md" : "bg-transparent",
       )}
     >
-      <nav aria-label="Main navigation" className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-        <Link href="/" className="flex items-center gap-2" aria-label={`${SITE.name} home`}>
-          <span className="grid h-9 w-9 place-items-center rounded-md bg-mash-red text-lg font-black" aria-hidden="true">
-            M
-          </span>
-          <span className="text-lg font-bold tracking-[0.18em]">MASH VENTURES</span>
+      <nav aria-label="Main navigation" className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 sm:px-8">
+        <Link href="/" className="flex items-center gap-3" aria-label={`${SITE.name} home`}>
+          <MashLogo variant="full" size="md" priority />
         </Link>
 
         <ul className="hidden items-center gap-8 lg:flex">

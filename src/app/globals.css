@@ -75,7 +75,49 @@ body {
   animation-delay: var(--d, 0s);
 }
 
+@keyframes hud-scan {
+  0% { transform: translateY(-100%); opacity: 0; }
+  30% { opacity: 0.7; }
+  70% { opacity: 0.7; }
+  100% { transform: translateY(200%); opacity: 0; }
+}
+
+.animate-hud-scan {
+  animation: hud-scan 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes cyber-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px rgba(225, 6, 0, 0.4)) drop-shadow(0 0 35px rgba(225, 6, 0, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(225, 6, 0, 0.8)) drop-shadow(0 0 60px rgba(225, 6, 0, 0.45));
+  }
+}
+
+.animate-cyber-pulse {
+  animation: cyber-pulse 4s ease-in-out infinite;
+}
+
+@keyframes logo-shimmer {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  50%, 100% { transform: translateX(200%) skewX(-20deg); }
+}
+
+.animate-logo-shimmer {
+  animation: logo-shimmer 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float-slow {
+  animation: float-slow 5s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .animate-pulse-glow, .animate-scan, .fade-up { animation: none; }
+  .animate-pulse-glow, .animate-scan, .fade-up, .animate-hud-scan, .animate-cyber-pulse, .animate-logo-shimmer, .animate-float-slow { animation: none; }
 }

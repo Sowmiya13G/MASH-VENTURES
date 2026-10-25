@@ -16,14 +16,16 @@ export default function CharacterVisual({
 }) {
   if (character.hasImage) {
     return (
-      <Image
-        src={`/characters/${character.slug}.webp`}
-        alt={`${character.name} robotic character by MASH VENTURES`}
-        fill
-        sizes={sizes}
-        priority={priority}
-        className="object-cover object-top transition duration-700 group-hover:scale-105"
-      />
+      <div className="relative h-full w-full bg-charcoal flex items-center justify-center p-2">
+        <Image
+          src={`/characters/${character.slug}.jpg`}
+          alt={`${character.name} robotic character by MASH VENTURES`}
+          fill
+          sizes={sizes}
+          priority={priority}
+          className="object-contain object-center transition duration-500 group-hover:scale-105 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
+        />
+      </div>
     );
   }
 

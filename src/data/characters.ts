@@ -31,7 +31,7 @@ export const characters: Character[] = [
     idealFor: ["Shopping mall footfall drives", "Family and kids' events", "Birthdays and celebrations", "Retail launches and festivals"],
     highlights: ["High-energy crowd engagement", "Photo-friendly design", "Meet-and-greet ready"],
     available: true,
-    hasImage: false,
+    hasImage: true,
     seoTitle: "Striker | Energetic Robotic Character for Malls & Events",
     seoDescription:
       "Meet Striker, MASH VENTURES' bold, high-energy robotic character for mall promotions, family events, launches and celebrations across India.",
@@ -48,7 +48,7 @@ export const characters: Character[] = [
     idealFor: ["Corporate events and conferences", "Product launches and reveals", "Exhibitions and trade shows", "Brand activations"],
     highlights: ["Commanding stage presence", "Premium metallic design", "Strong brand-reveal moments"],
     available: true,
-    hasImage: false,
+    hasImage: true,
     seoTitle: "Titan | Commanding Robotic Character for Corporate Events",
     seoDescription:
       "Titan is MASH VENTURES' towering robotic character for product launches, corporate events, exhibitions and premium brand activations in India.",
@@ -65,7 +65,7 @@ export const characters: Character[] = [
     idealFor: ["Large-scale product launches", "Mall atrium centrepieces", "Exhibitions and expos", "Festival and inauguration events"],
     highlights: ["Maximum visual impact", "Social-media ready", "Built for big venues"],
     available: true,
-    hasImage: false,
+    hasImage: true,
     seoTitle: "Colossus | Heavy-Armour Robotic Suit Experience",
     seoDescription:
       "Colossus is MASH VENTURES' heavy-armour robotic suit for large launches, mall centrepieces and exhibitions. Book a spectacle that gets people talking.",
