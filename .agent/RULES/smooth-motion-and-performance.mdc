@@ -1,0 +1,110 @@
+---
+description: Zero-lag performance, buttery smooth animations, and gentle transitions for 3D cinematic WebGL and Next.js.
+globs: ["**/*.{ts,tsx,js,jsx,css}"]
+alwaysApply: true
+---
+
+# Performance & Smooth Motion Engineering Rules
+
+> **Core Requirement**: The website must maintain 60–120 FPS without stutter, frame spikes, or hangs. Animations must feel weightless, organic, and gentle with seamless easing curves.
+
+---
+
+## 1. Frame Loop & Delta Clamping (Zero-Hang Execution)
+
+- **Frame-Rate Independent Damping**:
+  - Never use naive linear interpolation with fixed factors like `val += (target - val) * 0.1` without accounting for delta time. On variable refresh displays (60Hz vs 120Hz vs 144Hz), fixed lerp behaves erratically.
+  - Use exponential decay for buttery smoothing:
+    ```ts
+    // In RAF or useFrame:
+    const lambda = 8.0; // Snappiness/gentleness parameter
+    current += (target - current) * (1 - Math.exp(-lambda * delta));
+    ```
+- **Clamp Delta Time**:
+  - When users switch tabs or blur the window, `requestAnimationFrame` pauses. Upon returning, `delta` can jump to several seconds, causing physics or rotation to "teleport" or freeze the browser.
+  - **Always clamp delta**: `const safeDelta = Math.min(delta, 0.05);` (max 50ms per frame step).
+- **Single Property Owner**:
+  - Never allow GSAP, Framer Motion, and `useFrame` to modify the same transform property simultaneously. Split responsibilities clearly (e.g. GSAP owns section camera position; `useFrame` owns subtle micro-wobble/lookAt offset on an inner pivot group).
+
+---
+
+## 2. Resource Lifecycle & Memory Hygiene (Zero-Leak)
+
+- **Mandatory WebGL Disposal**:
+  - Every instantiated `THREE.Geometry`, `THREE.Material`, and `THREE.Texture` must be explicitly disposed of on component unmount.
+  - Implement a recursive disposal traversal when unmounting any 3D canvas or model:
+    ```ts
+    scene.traverse((obj) => {
+      if ((obj as THREE.Mesh).isMesh) {
+        const mesh = obj as THREE.Mesh;
+        mesh.geometry?.dispose();
+        if (Array.isArray(mesh.material)) {
+          mesh.material.forEach((m) => {
+            m.map?.dispose();
+            m.dispose();
+          });
+        } else if (mesh.material) {
+          (mesh.material as any).map?.dispose();
+          mesh.material.dispose();
+        }
+      }
+    });
+    renderer.dispose();
+    renderer.forceContextLoss();
+    ```
+- **Max WebGL Context Safety**:
+  - Browsers enforce a hard limit of 8–16 simultaneous WebGL contexts before dropping the oldest or crashing.
+  - Use a single shared `<Canvas>` where possible, or unmount and fully dispose of inactive 3D components when switching views.
+
+---
+
+## 3. Offscreen & Background Pausing (Zero-Waste GPU)
+
+- **Pause Off-Screen Canvases**:
+  - Wrap canvas containers in an `IntersectionObserver`. When `isIntersecting === false`, pause the animation loop completely (`cancelAnimationFrame`).
+- **Page Visibility API**:
+  - Listen to `visibilitychange` on `document`. When `document.hidden === true`, pause audio, stop the RAF render loop, and freeze clock updates.
+- **R3F Frameloop Control**:
+  - For static or semi-static scenes, set `frameloop="demand"` and call `invalidate()` only when interaction or animation occurs.
+
+---
+
+## 4. Adaptive Quality & DPR Limits
+
+- **Strict DPR Cap**:
+  - High-DPI screens (Retina, 4K) running at DPR 3+ will cause severe GPU fill-rate throttling.
+  - Cap DPR conservatively: `Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 1.5)`. On mobile devices, default to `1.0` or `1.2`.
+- **Render Power Preference**:
+  - Always configure `powerPreference: "high-performance"` on `WebGLRenderer`.
+- **Shadow & Shader Budget**:
+  - Cap shadow map resolution (e.g. 1024x1024 or 512x512). Never use soft shadow passes with excessive sample counts.
+  - Use simple custom shaders or standard materials over complex multi-pass post-processing (e.g. avoid heavy depth-of-field, volumetric fog, or multi-blur bloom on mobile).
+
+---
+
+## 5. Gentle, Smooth Transition Standards
+
+- **Easing Curves & Physics**:
+  - Avoid abrupt linear animations or harsh spring bounces.
+  - Use refined, elegant ease-out curves:
+    - CSS: `cubic-bezier(0.16, 1, 0.3, 1)` (smooth cinematic decelerate) or `cubic-bezier(0.25, 0.1, 0.25, 1)`.
+    - GSAP: `ease: "power3.out"` or `"expo.out"`.
+    - Framer Motion: `transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}`.
+- **Hardware-Accelerated CSS**:
+  - Only animate composite properties: `transform` and `opacity`.
+  - Never animate `top`, `left`, `width`, `height`, `margin`, or `padding`.
+  - Use `will-change: transform` only during active interaction and remove it afterward to avoid GPU layer bloat.
+  - Add `transform: translateZ(0)` or `backface-visibility: hidden` to eliminate subpixel jitter and font blurring during scale/translate transitions.
+
+---
+
+## 6. Scroll & Pointer Interaction
+
+- **Decouple Pointer Events from Render**:
+  - Never execute heavy math or state updates directly in `pointermove` or `mousemove`.
+  - Update normalized target coordinates (`targetX`, `targetY`) in event handlers; let the RAF render loop smoothly lerp the camera or model toward those targets.
+- **Passive Listeners**:
+  - Always register touch and wheel listeners with `{ passive: true }` so browser scrolling is never blocked on the main thread.
+- **Respect Accessibility**:
+  - Respect `prefers-reduced-motion: reduce`. When active, disable camera wobble, particle motion, and parallax, providing immediate, clean cross-fades instead.
+

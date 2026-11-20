@@ -1,229 +1,176 @@
 # Skill: Next.js 3D Cinematic Robot Website
 
 ## Purpose
-A reusable implementation playbook for building an immersive, dark futuristic website in an existing Next.js project, featuring original 3D robot characters and cinematic interaction.
+A production-grade implementation playbook for engineering a dark, futuristic cinematic website featuring interactive 3D robot characters. Built specifically to guarantee **zero lag, zero browser hangs, stable 60–120 FPS, and gentle, buttery smooth animations and transitions**.
 
-## 1. Discovery before implementation
-Inspect:
-- `package.json` and lockfile.
-- Next.js, React, React DOM, and TypeScript versions.
-- App Router structure and existing layouts/pages.
-- CSS framework and design tokens.
-- Existing animation, state, and component libraries.
-- Deployment constraints and current build scripts.
+---
 
-Do not assume a version. React Three Fiber v9 is intended for React 19; v8 is intended for React 18. Verify current package compatibility and project constraints before installing.
+## 1. Discovery Before Implementation
+Before modifying or creating any component:
+1. Check `package.json` and versions: Next.js App Router, React 19, Three.js, R3F, Framer Motion / Motion.
+2. Confirm canvas mounting strategy: dynamic client import with `ssr: false`.
+3. Check memory & WebGL context footprint: ensure previous canvases unmount and dispose properly before mounting new ones.
+4. Verify asset weights and formats: GLB, Draco compression, KTX2/WebP textures.
 
-## 2. Suggested stack
-Use only what is needed:
-- Next.js App Router + TypeScript.
-- Three.js.
-- `@react-three/fiber`.
-- `@react-three/drei`.
-- GSAP + ScrollTrigger.
-- Motion for UI transitions.
-- Lenis for smooth scrolling only when appropriate.
-- Zustand only when scene state must be shared across components.
-- Blender for authoring and optimizing original models.
+---
 
-Potential installation after version checks:
-```bash
-npm install three @react-three/fiber @react-three/drei gsap motion
-npm install -D @types/three
-```
-Add Lenis or Zustand only if the implementation needs them. Do not run installation commands until peer compatibility has been checked.
+## 2. Zero-Lag & Zero-Hang WebGL Pipeline
 
-## 3. Suggested architecture
-Adapt this to the existing repository rather than forcing a full restructure.
+### A. Frame-Rate Independent Exponential Damping (Butter-Smooth Smoothing)
+Do not use `current += (target - current) * 0.1` — it feels sluggish at 60Hz and unnaturally fast at 120Hz/144Hz.
+Instead, use frame-rate independent exponential decay:
 
-```text
-app/
-  layout.tsx
-  page.tsx
-  globals.css
-components/
-  layout/
-    Navbar.tsx
-    Footer.tsx
-    Preloader.tsx
-  sections/
-    Hero.tsx
-    About.tsx
-    Services.tsx
-    Projects.tsx
-    Contact.tsx
-  three/
-    SceneLoader.tsx
-    SceneCanvas.tsx
-    RobotScene.tsx
-    RobotModel.tsx
-    CameraRig.tsx
-    Lighting.tsx
-    Environment.tsx
-    animations/
-      RobotAnimations.ts
-      ScrollAnimations.ts
-  animations/
-    TextReveal.tsx
-    PageTransition.tsx
-hooks/
-  useReducedMotion.ts
-  useScrollProgress.ts
-store/
-  sceneStore.ts
-public/
-  models/
-  textures/
-  hdri/
-  images/
-lib/
-  three/
-  gsap/
-types/
+```typescript
+// Smoothly interpolate a value regardless of screen refresh rate
+export function damp(current: number, target: number, lambda: number, delta: number): number {
+  return current + (target - current) * (1 - Math.exp(-lambda * delta));
+}
+
+// In RAF loop or useFrame:
+const safeDelta = Math.min(delta, 0.05); // CLAMP delta to avoid catch-up spikes
+model.rotation.y = damp(model.rotation.y, targetRotationY, 7.5, safeDelta);
+model.rotation.x = damp(model.rotation.x, targetRotationX, 7.5, safeDelta);
 ```
 
-## 4. Rendering architecture
-- Keep the 3D canvas in a client component.
-- Dynamically import browser-dependent scene code with SSR disabled from a client boundary.
-- Use `Suspense` and a visible loading UI.
-- Add an error boundary or equivalent failure state.
-- Keep headings, CTA links, navigation, and SEO content in normal DOM elements.
-- Set camera, canvas sizing, DPR, and render settings deliberately.
-- Avoid mounting multiple expensive canvases when one shared scene or one active scene is sufficient.
-- Provide a static image or video fallback if WebGL is unavailable.
+### B. Delta-Time Clamping
+Whenever a user tabs away, `requestAnimationFrame` freezes. When the user returns, `delta` can be 10+ seconds.
+Without clamping, models jump wildly, physics blow up, and the main thread freezes trying to execute multiple catch-up cycles.
+**Mandatory rule**:
+```typescript
+const delta = clock.getDelta();
+const safeDelta = Math.min(delta, 0.05); // Hard cap at 50ms (20fps floor step)
+```
 
-## 5. Robot asset pipeline
-Find or create a model with:
-- Clear commercial-use permission.
-- A suitable polygon and texture budget.
-- Correct scale, origin, and orientation.
-- Clean materials and UVs.
-- Rigging and animation clips if character animation is required.
-- Separate meshes/bones for components that need procedural movement.
+### C. Offscreen & Background Pausing (GPU Power Saving)
+Never leave a WebGL render loop running if the user cannot see it:
+1. **IntersectionObserver**: If the 3D canvas is scrolled out of view, stop calling `requestAnimationFrame` or set R3F `frameloop="demand"`.
+2. **Page Visibility API**:
+```typescript
+useEffect(() => {
+  let isTabActive = true;
 
-Asset workflow:
-1. Define a distinct original character concept.
-2. Source a model from a reputable marketplace or commission a 3D artist.
-3. Read the exact license for the selected asset.
-4. Inspect the GLB in a viewer and in the actual scene.
-5. Check scale, axes, materials, skeleton, and animation clips.
-6. Optimize geometry and textures.
-7. Compress with suitable tools (Draco/Meshopt for geometry; KTX2 for textures where supported).
-8. Test visual quality and loading on desktop and mobile.
+  const handleVisibility = () => {
+    isTabActive = !document.hidden;
+    if (isTabActive) {
+      clock.getDelta(); // Reset clock delta accumulation
+    }
+  };
 
-Possible asset discovery sites:
-- Sketchfab: https://sketchfab.com/
-- CGTrader: https://www.cgtrader.com/
-- BlenderKit: https://www.blenderkit.com/
-- TurboSquid: https://www.turbosquid.com/
+  document.addEventListener("visibilitychange", handleVisibility);
+  return () => document.removeEventListener("visibilitychange", handleVisibility);
+}, []);
+```
 
-These are discovery sources, not blanket guarantees of commercial rights. Check each individual asset's license and terms.
+### D. Adaptive DPR & Power Preference
+High-resolution 4K or Retina displays will overheat mobile GPUs if rendered at DPR 3+:
+```typescript
+const renderer = new THREE.WebGLRenderer({
+  alpha: true,
+  antialias: true,
+  powerPreference: "high-performance",
+});
 
-## 6. Original-character intellectual property safeguards
-The visual brief may reference broad science-fiction themes such as mechanical armor, industrial robotics, futuristic materials, and cinematic lighting. It must not copy protected character expression.
+// Strict DPR ceiling: max 1.5 on desktop, 1.0 on mobile
+const isMobile = window.innerWidth < 768;
+const maxDpr = isMobile ? 1.0 : 1.5;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
+```
 
-Do not use Transformers names, logos, character likenesses, signature silhouettes, distinctive color/shape combinations, or recognizable transformation designs without appropriate written authorization. Create a distinct robot identity, silhouette, face, armor language, palette, and insignia.
+---
 
-## 7. Character interaction
-Implement in increasing complexity:
-1. Static model correctly framed.
-2. Subtle idle movement.
-3. Pointer-based head or upper-body tracking.
-4. Authored animation clips through `AnimationMixer`.
-5. Camera choreography.
-6. Scroll-synchronized animation.
-7. Complex mechanical sequences only if the model was built for them.
+## 3. WebGL Resource Lifecycle & Zero Memory Leaks
 
-Use `useFrame` for lightweight procedural motion. Use animation mixers for skeletal clips. Avoid React state updates on every frame; mutate Three.js objects through refs.
+WebGL contexts and GPU buffers are NOT cleaned up automatically by JavaScript garbage collection. Failing to dispose of meshes, materials, and textures causes browser crashes and `CONTEXT_LOST_WEBGL` errors.
 
-## 8. Animation system
-Recommended responsibilities:
-- AnimationMixer: authored skeletal clips (idle, walk, turn).
-- `useFrame`: small procedural movement and pointer smoothing.
-- GSAP: camera timelines, section choreography, text reveals, scroll timelines.
-- Motion: navigation, buttons, dialogs, and DOM micro-interactions.
-- Lenis: optional smooth scrolling, integrated carefully with ScrollTrigger.
+### Universal Three.js Scene Cleanup Function
+```typescript
+export function disposeThreeScene(scene: THREE.Scene, renderer?: THREE.WebGLRenderer) {
+  scene.traverse((object) => {
+    if (!(object as THREE.Mesh).isMesh) return;
+    const mesh = object as THREE.Mesh;
 
-Important: assign one owner to each animated property. For example, if GSAP controls `camera.position`, do not also update that same position in `useFrame`.
+    // Dispose Geometry
+    mesh.geometry?.dispose();
 
-For scroll scenes:
-- Use stable timeline setup and cleanup.
-- Avoid creating duplicate ScrollTriggers on rerender.
-- Keep DOM scroll content usable without WebGL.
-- Avoid pinning too many sections, especially on mobile.
-- Test refresh, resize, route changes, and reduced-motion behavior.
+    // Dispose Material & Textures
+    if (Array.isArray(mesh.material)) {
+      mesh.material.forEach(disposeMaterial);
+    } else if (mesh.material) {
+      disposeMaterial(mesh.material);
+    }
+  });
 
-## 9. Visual design direction
-- Background: near-black, charcoal, subtle gradients.
-- Accents: restrained amber, electric blue, or a project-specific palette.
-- Materials: metallic, roughness variation, controlled emissive details.
-- Lighting: key, fill, rim, and environment lighting; use volumetric effects sparingly.
-- Typography: strong display face paired with a highly readable body face.
-- Layout: bold hero, clear content hierarchy, generous whitespace, purposeful CTA.
-- Avoid excessive glow, noisy backgrounds, tiny text, and constant motion.
+  if (renderer) {
+    renderer.dispose();
+    renderer.forceContextLoss();
+    if (renderer.domElement?.parentNode) {
+      renderer.domElement.parentNode.removeChild(renderer.domElement);
+    }
+  }
+}
 
-## 10. Page experience
-Suggested initial landing page:
-1. Short branded preloader (skippable and accessible).
-2. Hero with original robot and clear value proposition.
-3. About section with restrained scroll storytelling.
-4. Services presented as accessible DOM cards.
-5. Projects/portfolio with optimized media.
-6. Contact CTA and footer.
+function disposeMaterial(mat: THREE.Material) {
+  // Dispose all potential texture maps on the material
+  const m = mat as any;
+  const textureKeys = ["map", "normalMap", "roughnessMap", "metalnessMap", "alphaMap", "emissiveMap"];
+  textureKeys.forEach((key) => {
+    if (m[key] && typeof m[key].dispose === "function") {
+      m[key].dispose();
+    }
+  });
+  mat.dispose();
+}
+```
 
-Build separate routes only when they provide real content value. Do not force every section to depend on the 3D canvas.
+---
 
-## 11. Performance
-- Lazy-load non-critical models and sections.
-- Use compressed GLB assets and appropriately sized textures.
-- Consider LOD and simplified mobile assets.
-- Limit real-time shadows, transparent layers, particles, and post-processing.
-- Use instancing for repeated geometry.
-- Avoid unnecessary React rerenders and per-frame state changes.
-- Pause or reduce rendering when scenes are offscreen where practical.
-- Dispose of resources and clean up listeners/timelines when components unmount.
-- Measure on representative hardware; do not promise a fixed FPS.
-- Keep initial HTML and primary content useful before the model loads.
+## 4. Gentle, Cinematic Motion & Transition Standards
 
-## 12. Accessibility and resilience
-- Respect `prefers-reduced-motion`.
-- Provide pause/skip controls for long intro sequences.
-- Ensure keyboard access and visible focus.
-- Maintain text contrast.
-- Use semantic headings and links.
-- Do not put essential information only inside the canvas.
-- Provide useful loading, error, and unsupported-WebGL states.
-- Do not trap scrolling or disable browser navigation.
+To ensure interactions feel tactile, premium, and calm rather than frantic:
 
-## 13. Milestone plan
-### Milestone 1 — Foundation
-Inspect project, confirm versions, plan architecture, and install only compatible dependencies.
+### A. Easing Design Tokens
+- **Cinematic Ease-Out (DOM & Micro-Interactions)**:
+  `cubic-bezier(0.16, 1, 0.3, 1)` (smooth, natural deceleration with zero bounce)
+- **Fluid Floating Motion**:
+  `Math.sin(elapsedTime * 1.2) * 0.05` (slow, organic hover rhythm)
+- **Soft Damped Magnetic Pointer**:
+  `targetAngle = normalizedMouse * 0.25` (subtle bounding to avoid dizzying tilts)
 
-### Milestone 2 — Hero model
-Load a placeholder or licensed original GLB, frame it correctly, add lighting, loading state, and fallback.
+### B. Single Ownership Principle
+To prevent jank and animation stutter:
+- **GSAP / ScrollTrigger**: Owns section scroll progress and global camera travel path.
+- **`useFrame` / RAF**: Owns internal character micro-motion (idle breathing, head glance tracking).
+- **Framer Motion**: Owns DOM UI elements (text reveals, drawer slides, button hover states).
+- **Never** let two systems write to the same object property at the same time.
 
-### Milestone 3 — Interaction
-Add idle animation and pointer-responsive movement, with reduced-motion support.
+### C. Hardware-Accelerated CSS Transitions
+For DOM overlays and page sections:
+```css
+/* Ensure GPU composite layer with no subpixel font blur */
+.smooth-transition {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+}
+```
 
-### Milestone 4 — Cinematic hero
-Add typography, CTA, background atmosphere, and carefully controlled camera movement.
+---
 
-### Milestone 5 — Scroll storytelling
-Add a small number of meaningful GSAP/ScrollTrigger sequences. Test mobile and route changes.
+## 5. Character Pipeline & IP Safeguards
+- **Originality**: All robot assets must have distinct proportions, mechanical joint structures, and aesthetic identities.
+- **No IP Infringement**: Never reproduce Transformers logos, head sculpts (e.g. Optimus, Bumblebee), or trademarked likenesses.
+- **Optimization Checklist**:
+  - Max polycount: < 80,000 triangles for hero character; < 30,000 for secondary characters.
+  - Textures: 1024x1024 or 2048x2048 max, compressed with WebP or KTX2.
+  - Rigging: Keep bone count under 64 bones for fast skeletal skinning.
 
-### Milestone 6 — Remaining website
-Build About, Services, Projects, Contact, and navigation as responsive accessible DOM components.
+---
 
-### Milestone 7 — Production hardening
-Optimize assets, test mobile/desktop, run lint/type-check/build, verify Vercel deployment, and document remaining limitations.
-
-## 14. Definition of done for the first milestone
-- Model loads without console errors.
-- Correct framing on common desktop and mobile sizes.
-- Loading and failure states are visible and usable.
-- Pointer movement is smooth and bounded.
-- Reduced-motion mode is respected.
-- No essential content depends on WebGL.
-- No major layout shift when the model loads.
-- Project lint, type-check, and production build pass (if scripts exist).
-- Asset usage rights are documented.
+## 6. Implementation Runbook & Verification
+When adding or updating 3D features:
+1. **Frame Stability Check**: Verify in Chrome DevTools Performance panel that no single task exceeds 16.6ms (60fps) during orbit or scroll.
+2. **Tab Switch Test**: Minimize or switch tabs for 10 seconds, then return. Verify that the 3D model does not jump, glitch, or freeze.
+3. **Memory Leak Test**: Mount, unmount, and switch characters 5 times. Verify heap memory stabilizes and active WebGL context count does not exceed 1.
+4. **Code Quality**:
+   - `npm run typecheck` passes with zero errors.
+   - `npm run lint` passes with zero warnings.

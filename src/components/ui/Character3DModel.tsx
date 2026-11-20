@@ -17,6 +17,10 @@ export default function Character3DModel({ character, interactive = true }: Char
     const container = containerRef.current;
     if (!container) return;
 
+    let isDisposed = false;
+    let isVisible = true;
+    let isTabActive = !document.hidden;
+
     // Scene
     const scene = new THREE.Scene();
 
@@ -29,14 +33,14 @@ export default function Character3DModel({ character, interactive = true }: Char
     );
     camera.position.set(0, 0, 7.5);
 
-    // Renderer
+    // Renderer with strict DPR cap and power preference for zero lag
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
       powerPreference: "high-performance",
     });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
@@ -93,18 +97,26 @@ export default function Character3DModel({ character, interactive = true }: Char
     outerRing.position.y = -2.68;
     characterGroup.add(outerRing);
 
+    // Keep track of textures and meshes for disposal
+    const allocatedTextures: THREE.Texture[] = [];
+    const meshLayers: THREE.Mesh[] = [];
+
     // Load Character Texture
     const textureLoader = new THREE.TextureLoader();
     const imagePath = `/characters/${character.slug}.png`;
 
-    let meshLayers: THREE.Mesh[] = [];
-
     textureLoader.load(
       imagePath,
       (texture) => {
+        if (isDisposed) {
+          texture.dispose();
+          return;
+        }
+
         texture.colorSpace = THREE.SRGBColorSpace;
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
+        allocatedTextures.push(texture);
 
         // Multi-layered depth parallax figure (gives real 3D volume & depth)
         const planeGeo = new THREE.PlaneGeometry(3.4, 5.2, 32, 32);
@@ -157,7 +169,7 @@ export default function Character3DModel({ character, interactive = true }: Char
       undefined,
       (err) => {
         console.error("Failed to load character texture:", err);
-        setLoading(false);
+        if (!isDisposed) setLoading(false);
       }
     );
 
@@ -199,12 +211,12 @@ export default function Character3DModel({ character, interactive = true }: Char
     };
 
     container.addEventListener("pointerdown", handlePointerDown);
-    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("pointerup", handlePointerUp);
 
     // Resize Handler
     const handleResize = () => {
-      if (!container) return;
+      if (!container || isDisposed) return;
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
@@ -213,28 +225,59 @@ export default function Character3DModel({ character, interactive = true }: Char
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
-    // Animation Loop
+    // Page Visibility to pause when tab is backgrounded
+    const handleVisibilityChange = () => {
+      isTabActive = !document.hidden;
+      if (isTabActive) {
+        clock.getDelta(); // reset delta to prevent catch-up jumps
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // IntersectionObserver to pause rendering when scrolled out of view
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          isVisible = entry.isIntersecting;
+          if (isVisible) {
+            clock.getDelta(); // reset delta accumulation
+          }
+        }
+      },
+      { threshold: 0.05 }
+    );
+    intersectionObserver.observe(container);
+
+    // Animation Loop with delta clamping and exponential damping
     let animationFrameId: number;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+
+      // Do not waste CPU/GPU cycles when offscreen or tab is hidden
+      if (!isVisible || !isTabActive) return;
+
+      const rawDelta = clock.getDelta();
+      // Clamp delta to 50ms (20fps floor) to prevent wild jumps after tab activation
+      const delta = Math.min(rawDelta, 0.05);
       const elapsedTime = clock.getElapsedTime();
 
-      // Idle floating breathing cycle
+      // Idle floating breathing cycle (gentle, organic)
       characterGroup.position.y = Math.sin(elapsedTime * 1.5) * 0.08;
 
       // Outer cyber ring continuous spin
       outerRing.rotation.z = elapsedTime * 0.4;
 
-      // Smooth damped rotation towards target
+      // Smooth continuous showcase drift when not interacting
       if (!isDragging) {
-        // Continuous subtle 360 showcase drift
         targetRotationY += 0.003;
       }
 
-      characterGroup.rotation.y += (targetRotationY - characterGroup.rotation.y) * 0.06;
-      characterGroup.rotation.x += (targetRotationX - characterGroup.rotation.x) * 0.06;
+      // Frame-rate independent exponential damping for buttery smooth motion
+      const dampFactor = 1 - Math.exp(-6.5 * delta);
+      characterGroup.rotation.y += (targetRotationY - characterGroup.rotation.y) * dampFactor;
+      characterGroup.rotation.x += (targetRotationX - characterGroup.rotation.x) * dampFactor;
 
       renderer.render(scene, camera);
     };
@@ -242,22 +285,44 @@ export default function Character3DModel({ character, interactive = true }: Char
     animate();
 
     return () => {
+      isDisposed = true;
       cancelAnimationFrame(animationFrameId);
+
       container.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+
       resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+
+      // Full WebGL resource garbage collection
+      allocatedTextures.forEach((t) => t.dispose());
+
+      scene.traverse((obj) => {
+        if ((obj as THREE.Mesh).isMesh) {
+          const mesh = obj as THREE.Mesh;
+          mesh.geometry?.dispose();
+          if (Array.isArray(mesh.material)) {
+            mesh.material.forEach((m) => m.dispose());
+          } else if (mesh.material) {
+            mesh.material.dispose();
+          }
+        }
+      });
+
       if (renderer.domElement.parentNode) {
         renderer.domElement.parentNode.removeChild(renderer.domElement);
       }
       renderer.dispose();
+      renderer.forceContextLoss();
     };
   }, [character.slug, interactive]);
 
   return (
     <div className="relative h-full w-full select-none cursor-grab active:cursor-grabbing">
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-charcoal">
+        <div className="absolute inset-0 flex items-center justify-center bg-charcoal transition-opacity duration-500 ease-out">
           <div className="flex flex-col items-center gap-3">
             <div className="h-7 w-7 animate-spin rounded-full border-2 border-mash-red border-t-transparent" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-chrome/60">
@@ -266,7 +331,11 @@ export default function Character3DModel({ character, interactive = true }: Char
           </div>
         </div>
       )}
-      <div ref={containerRef} className="h-full w-full" />
+      <div
+        ref={containerRef}
+        className={`h-full w-full transition-opacity duration-700 ease-out ${loading ? "opacity-0" : "opacity-100"
+          }`}
+      />
       <div className="pointer-events-none absolute bottom-3 right-3 rounded bg-black/70 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-chrome/70 backdrop-blur-sm border border-white/10">
         3D View • Drag to Rotate
       </div>
