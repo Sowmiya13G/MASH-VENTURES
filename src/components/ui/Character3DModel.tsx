@@ -333,8 +333,9 @@ export default function Character3DModel({ character, interactive = true }: Char
       )}
       <div
         ref={containerRef}
-        className={`h-full w-full transition-opacity duration-700 ease-out ${loading ? "opacity-0" : "opacity-100"
-          }`}
+        className={`h-full w-full transition-opacity duration-700 ease-out ${
+          loading ? "opacity-0" : "opacity-100"
+        }`}
       />
       <div className="pointer-events-none absolute bottom-3 right-3 rounded bg-black/70 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-chrome/70 backdrop-blur-sm border border-white/10">
         3D View • Drag to Rotate
