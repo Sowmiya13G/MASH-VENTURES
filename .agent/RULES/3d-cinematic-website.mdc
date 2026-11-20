@@ -1,0 +1,24 @@
+---
+description: Project rules for a premium Next.js website with original cinematic 3D robot characters, WebGL, and scroll animation.
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# 3D Cinematic Website Rules
+
+- Inspect the existing app, package versions, routing, styling, and conventions before editing.
+- Follow the root `AGENTS.md` and `skills/3d-cinematic-website/SKILL.md`.
+- Preserve existing functionality; avoid broad rewrites and dependency upgrades without a clear reason.
+- Use Next.js App Router, TypeScript, and the project's existing styling conventions.
+- Keep browser-only WebGL code in client components and dynamically load the canvas with SSR disabled.
+- Keep semantic page content, SEO, navigation, and accessible controls outside the canvas.
+- Use React Three Fiber and Drei for React-based 3D scenes; use GSAP/ScrollTrigger for coordinated timelines and scroll choreography; use Motion for UI transitions.
+- Give every animated property one owner. Never let GSAP and `useFrame` compete for the same property.
+- Load models asynchronously; include loading, error, and WebGL fallback states.
+- Optimize models, textures, draw calls, shadows, post-processing, and mobile quality.
+- Respect reduced-motion preferences and provide keyboard-accessible alternatives.
+- Use only original or properly licensed assets. Verify commercial-use and modification rights.
+- Do not copy Transformers characters, names, logos, or recognizable designs without written authorization.
+- Build in milestones. First complete and test the responsive 3D hero before expanding to other sections.
+- Run the project's actual lint, type-check, and build scripts after meaningful changes.
+- Never claim tests, performance, licenses, or deployment succeeded unless verified.
