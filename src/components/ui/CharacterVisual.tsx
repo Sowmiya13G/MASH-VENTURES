@@ -118,10 +118,10 @@ export default function CharacterVisual({
             </linearGradient>
           </defs>
           <rect x="72" y="14" width="56" height="52" rx="10" fill={`url(#m-${character.slug})`} />
-          <rect x="82" y="30" width="36" height="9" rx="4" fill="#e10600" />
+          <rect x="82" y="30" width="36" height="9" rx="4" fill="#c90010" />
           <rect x="90" y="66" width="20" height="14" fill="#555c68" />
           <path d="M40 90 L160 90 L172 150 L28 150 Z" fill={`url(#m-${character.slug})`} />
-          <rect x="84" y="106" width="32" height="24" rx="4" fill="#e10600" opacity="0.9" />
+          <rect x="84" y="106" width="32" height="24" rx="4" fill="#c90010" opacity="0.9" />
           <rect x="14" y="88" width="38" height="30" rx="8" fill="#555c68" />
           <rect x="148" y="88" width="38" height="30" rx="8" fill="#555c68" />
           <rect x="20" y="118" width="22" height="86" rx="8" fill={`url(#m-${character.slug})`} />
@@ -129,8 +129,8 @@ export default function CharacterVisual({
           <rect x="62" y="150" width="76" height="46" rx="6" fill="#3a3f48" />
           <rect x="64" y="196" width="30" height="92" rx="8" fill={`url(#m-${character.slug})`} />
           <rect x="106" y="196" width="30" height="92" rx="8" fill={`url(#m-${character.slug})`} />
-          <rect x="58" y="282" width="40" height="14" rx="5" fill="#e10600" />
-          <rect x="102" y="282" width="40" height="14" rx="5" fill="#e10600" />
+          <rect x="58" y="282" width="40" height="14" rx="5" fill="#c90010" />
+          <rect x="102" y="282" width="40" height="14" rx="5" fill="#c90010" />
         </svg>
       )}
     </div>

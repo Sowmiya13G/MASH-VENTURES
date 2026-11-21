@@ -208,7 +208,7 @@ export default function TransformationCanvas() {
           <button
             type="button"
             onClick={handleReplay}
-            className="flex items-center gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-mash-red to-mash-red-dark px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest text-white shadow-[0_0_24px_rgba(225,6,0,0.5)] transition hover:brightness-110 active:scale-95 font-tech"
+            className="flex items-center gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-mash-red to-mash-red-dark px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest text-white shadow-[0_0_24px_rgba(201,0,16,0.5)] transition hover:brightness-110 active:scale-95 font-tech"
           >
             {isTransforming ? <RotateCcw size={12} className="animate-spin" /> : <Play size={12} />}
             <span>Replay</span>

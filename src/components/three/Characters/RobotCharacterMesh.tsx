@@ -71,7 +71,7 @@ export function RobotCharacterMesh({ slug }: RobotCharacterMeshProps) {
       hasHeavyFists: false,
     },
     colossus: {
-      primaryColor: "#e10600", // Crimson Heavy Armor Red
+      primaryColor: "#c90010", // Crimson Heavy Armor Red
       secondaryColor: "#0f172a", // Dark Iron Void
       accentColor: "#f97316", // Molten Orange Reactor
       jointColor: "#64748b", // Heavy Industrial Steel

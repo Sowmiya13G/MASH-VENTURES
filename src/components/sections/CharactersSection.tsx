@@ -31,7 +31,7 @@ export default function CharactersSection({ asPage = false }: { asPage?: boolean
                 <article
                   className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border transition duration-500 ${
                     c.available
-                      ? "border-mash-red/40 bg-gunmetal shadow-[0_0_30px_rgb(225_6_0/0.15)] hover:border-mash-red/80 hover:shadow-[0_0_48px_rgb(225_6_0/0.3)]"
+                      ? "border-mash-red/40 bg-gunmetal shadow-[0_0_30px_rgb(201_0_16/0.15)] hover:border-mash-red/80 hover:shadow-[0_0_48px_rgb(201_0_16/0.3)]"
                       : "border-white/5 bg-gunmetal/60 opacity-80 hover:opacity-100 hover:border-white/20"
                   }`}
                 >

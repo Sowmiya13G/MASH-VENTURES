@@ -57,7 +57,7 @@ export function TransformationScene({ progress, overclock = false }: Transformat
       <directionalLight
         position={[-6, 4, -4]}
         intensity={3.5}
-        color="#e10600"
+        color="#c90010"
       />
 
       {/* Electric Cyan Fill (Supercar optics & cyber reflections) */}
@@ -92,7 +92,7 @@ export function TransformationScene({ progress, overclock = false }: Transformat
         {/* Primary Glowing Red Neon Ring */}
         <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
           <torusGeometry args={[2.48, 0.045, 16, 64]} />
-          <meshBasicMaterial color="#e10600" />
+          <meshBasicMaterial color="#c90010" />
         </mesh>
 
         {/* Outer Rotating Cyan Scanner Ring */}

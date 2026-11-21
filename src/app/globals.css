@@ -2,8 +2,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-mash-red: #e10600;
-  --color-mash-red-dark: #a80400;
+  --color-mash-red: #c90010;
+  --color-mash-red-dark: #96000c;
   --color-cyber-gold: #f59e0b;
   --color-cyber-cyan: #00d2ff;
   --color-chrome: #c9ced6;
@@ -39,7 +39,7 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #e10600;
+  background: #c90010;
 }
 
 /* Firefox scrollbar */
@@ -134,8 +134,8 @@ h1, h2, h3, h4, .font-display {
 
 /* Cybernetic subtle glow pulse */
 @keyframes cyber-pulse {
-  0%, 100% { box-shadow: 0 0 15px rgba(225, 6, 0, 0.2), inset 0 0 15px rgba(225, 6, 0, 0.1); }
-  50% { box-shadow: 0 0 25px rgba(225, 6, 0, 0.45), inset 0 0 20px rgba(225, 6, 0, 0.2); }
+  0%, 100% { box-shadow: 0 0 15px rgba(201, 0, 16, 0.2), inset 0 0 15px rgba(201, 0, 16, 0.1); }
+  50% { box-shadow: 0 0 25px rgba(201, 0, 16, 0.45), inset 0 0 20px rgba(201, 0, 16, 0.2); }
 }
 
 .animate-cyber-pulse {

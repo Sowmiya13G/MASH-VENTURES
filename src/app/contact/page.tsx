@@ -21,7 +21,7 @@ export default function ContactPage() {
       value: SITE.email,
       href: `mailto:${SITE.email}`,
       icon: (
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e10600" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c90010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="2" y="4" width="20" height="16" rx="2" />
           <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
         </svg>
@@ -33,7 +33,7 @@ export default function ContactPage() {
       value: SITE.phone,
       href: `tel:${SITE.phone.replace(/\s/g, "")}`,
       icon: (
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e10600" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c90010" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
         </svg>
       ),
@@ -116,7 +116,7 @@ export default function ContactPage() {
                 href={c.href}
                 target={c.external ? "_blank" : undefined}
                 rel={c.external ? "noopener noreferrer me" : undefined}
-                className="group relative flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-gunmetal/70 transition-all duration-300 hover:border-mash-red/60 hover:bg-gunmetal hover:shadow-[0_8px_32px_rgba(225,6,0,0.18)]"
+                className="group relative flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-gunmetal/70 transition-all duration-300 hover:border-mash-red/60 hover:bg-gunmetal hover:shadow-[0_8px_32px_rgba(201,0,16,0.18)]"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-black/50 shadow-inner group-hover:scale-110 transition duration-300">
                   {c.icon}

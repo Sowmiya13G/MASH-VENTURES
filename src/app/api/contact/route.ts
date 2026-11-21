@@ -117,9 +117,9 @@ function teamEmailHtml(d: EnquiryInput, timestamp: string): string {
   <div style="max-width:620px;margin:0 auto;background:#14171c;border:1px solid #262a33;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.5);">
     
     <!-- Header -->
-    <div style="background:#0b0c0e;padding:28px 32px;border-bottom:2px solid #e10600;">
+    <div style="background:#0b0c0e;padding:28px 32px;border-bottom:2px solid #c90010;">
       <h1 style="margin:0;font-size:22px;font-weight:800;letter-spacing:2px;color:#ffffff;text-transform:uppercase;">
-        MASH <span style="color:#e10600;">VENTURES</span>
+        MASH <span style="color:#c90010;">VENTURES</span>
       </h1>
       <p style="margin:4px 0 0 0;font-size:11px;font-weight:600;letter-spacing:1.5px;color:#f59e0b;text-transform:uppercase;">
         Inbound Website Transmission // Robotic Entertainment
@@ -127,8 +127,8 @@ function teamEmailHtml(d: EnquiryInput, timestamp: string): string {
     </div>
 
     <!-- Alert Banner -->
-    <div style="background:rgba(225,6,0,0.08);border-bottom:1px solid rgba(225,6,0,0.2);padding:14px 32px;">
-      <p style="margin:0;font-size:13px;color:#e10600;font-weight:700;letter-spacing:0.5px;">
+    <div style="background:rgba(201,0,16,0.08);border-bottom:1px solid rgba(201,0,16,0.2);padding:14px 32px;">
+      <p style="margin:0;font-size:13px;color:#c90010;font-weight:700;letter-spacing:0.5px;">
         ● NEW CLIENT BOOKING ENQUIRY
       </p>
     </div>
@@ -153,7 +153,7 @@ function teamEmailHtml(d: EnquiryInput, timestamp: string): string {
 
       <!-- Quick Action -->
       <div style="text-align:center;margin:28px 0 12px 0;">
-        <a href="mailto:${escapeHtml(d.email)}?subject=${encodeURIComponent("Re: MASH VENTURES Enquiry - " + d.experience)}" style="display:inline-block;background:#e10600;color:#ffffff;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;padding:14px 28px;border-radius:9999px;">
+        <a href="mailto:${escapeHtml(d.email)}?subject=${encodeURIComponent("Re: MASH VENTURES Enquiry - " + d.experience)}" style="display:inline-block;background:#c90010;color:#ffffff;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;padding:14px 28px;border-radius:9999px;">
           Reply to ${escapeHtml(d.name)}
         </a>
       </div>
@@ -183,9 +183,9 @@ function customerEmailHtml(d: EnquiryInput): string {
 </head>
 <body style="margin:0;padding:24px 0;background-color:#0b0c0e;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ffffff;">
   <div style="max-width:580px;margin:0 auto;background:#14171c;border:1px solid #262a33;border-radius:12px;overflow:hidden;">
-    <div style="background:#0b0c0e;padding:28px 32px;border-bottom:2px solid #e10600;">
+    <div style="background:#0b0c0e;padding:28px 32px;border-bottom:2px solid #c90010;">
       <h1 style="margin:0;font-size:22px;font-weight:800;letter-spacing:2px;color:#ffffff;text-transform:uppercase;">
-        MASH <span style="color:#e10600;">VENTURES</span>
+        MASH <span style="color:#c90010;">VENTURES</span>
       </h1>
       <p style="margin:4px 0 0 0;font-size:11px;letter-spacing:1.5px;color:#f59e0b;text-transform:uppercase;">
         Larger-Than-Life Robotic Entertainment

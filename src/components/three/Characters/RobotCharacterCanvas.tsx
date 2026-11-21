@@ -77,7 +77,7 @@ export default function RobotCharacterCanvas({ slug }: RobotCharacterCanvasProps
           {/* Studio Lighting */}
           <ambientLight intensity={1.3} />
           <directionalLight position={[5, 7, 5]} intensity={2.6} color="#ffffff" />
-          <directionalLight position={[-5, 4, -4]} intensity={3.2} color="#e10600" />
+          <directionalLight position={[-5, 4, -4]} intensity={3.2} color="#c90010" />
           <directionalLight position={[4, -2, -3]} intensity={2.0} color="#00d2ff" />
 
           {/* 3D Volumetric Robot Mesh */}
@@ -91,7 +91,7 @@ export default function RobotCharacterCanvas({ slug }: RobotCharacterCanvasProps
             </mesh>
             <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
               <torusGeometry args={[1.85, 0.035, 16, 48]} />
-              <meshBasicMaterial color="#e10600" />
+              <meshBasicMaterial color="#c90010" />
             </mesh>
             <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.04, 0]}>
               <torusGeometry args={[2.2, 0.015, 16, 48]} />

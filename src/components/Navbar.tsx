@@ -68,7 +68,7 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/contact#book"
-            className="hidden md:inline-flex items-center justify-center gap-2 rounded-full bg-mash-red px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-mash-red-dark hover:shadow-[0_0_32px_rgb(225_6_0/0.45)] active:scale-[0.98] shrink-0"
+            className="hidden md:inline-flex items-center justify-center gap-2 rounded-full bg-mash-red px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-mash-red-dark hover:shadow-[0_0_32px_rgb(201_0_16/0.45)] active:scale-[0.98] shrink-0"
           >
             Book an Experience
           </Link>

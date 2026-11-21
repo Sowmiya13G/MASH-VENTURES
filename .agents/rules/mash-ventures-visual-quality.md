@@ -10,7 +10,8 @@ alwaysApply: true
 - **Atmosphere**: Dark, cinematic, futuristic creative agency aesthetic.
 - **Background Palette**: Void black (`#0a0a0c`) and deep carbon charcoal (`#111317`).
 - **Accent Hierarchy**:
-  - Primary Brand Red: `#e10600`
+  - Primary Brand Red: `#c90010`
+  - Dark Red: `#96000c`
   - Cybernetic Gold/Amber: `#f59e0b` (for supercar body and mechanical core accents)
   - Cyber Cyan / Electric Blue: `#00d2ff` (for scanner rings and optical visors)
   - Platinum Chrome: `#e5e7eb` (for typography and structural trims)

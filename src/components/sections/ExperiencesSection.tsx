@@ -114,7 +114,7 @@ export default function ExperiencesSection({ headingLevel = "h2" }: { headingLev
                 {isActive && (
                   <m.span
                     layoutId={`${baseLayoutId}-active-filter`}
-                    className="absolute inset-0 rounded-full border border-mash-red/50 bg-mash-red/15 shadow-[0_0_20px_rgba(225,6,0,0.25)]"
+                    className="absolute inset-0 rounded-full border border-mash-red/50 bg-mash-red/15 shadow-[0_0_20px_rgba(201,0,16,0.25)]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -148,14 +148,14 @@ export default function ExperiencesSection({ headingLevel = "h2" }: { headingLev
                 >
                   <div
                     onMouseMove={handleMouseMove}
-                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-charcoal/90 p-5 sm:p-7 lg:p-8 backdrop-blur-sm transition-all duration-500 hover:border-mash-red/60 hover:shadow-[0_12px_40px_rgba(225,6,0,0.12)] hover:-translate-y-1"
+                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-charcoal/90 p-5 sm:p-7 lg:p-8 backdrop-blur-sm transition-all duration-500 hover:border-mash-red/60 hover:shadow-[0_12px_40px_rgba(201,0,16,0.12)] hover:-translate-y-1"
                   >
                     {/* Interactive Cursor Spotlight Glow */}
                     <div
                       className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                       style={{
                         background:
-                          "radial-gradient(450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(225, 6, 0, 0.14), transparent 70%)",
+                          "radial-gradient(450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(201, 0, 16, 0.14), transparent 70%)",
                       }}
                       aria-hidden="true"
                     />
@@ -184,7 +184,7 @@ export default function ExperiencesSection({ headingLevel = "h2" }: { headingLev
 
                       {/* Icon & Title */}
                       <div className="mt-6 flex items-start gap-4">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gunmetal/80 text-mash-red shadow-inner transition-transform duration-300 group-hover:scale-105 group-hover:border-mash-red/50 group-hover:shadow-[0_0_20px_rgba(225,6,0,0.3)]">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gunmetal/80 text-mash-red shadow-inner transition-transform duration-300 group-hover:scale-105 group-hover:border-mash-red/50 group-hover:shadow-[0_0_20px_rgba(201,0,16,0.3)]">
                           <Icon size={26} strokeWidth={1.6} aria-hidden="true" />
                         </div>
                         <div>

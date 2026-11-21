@@ -25,7 +25,7 @@ export default function OpengraphImage() {
             style={{
               width: 72,
               height: 72,
-              background: "#e10600",
+              background: "#c90010",
               borderRadius: 14,
               display: "flex",
               alignItems: "center",
@@ -41,7 +41,7 @@ export default function OpengraphImage() {
         <div style={{ marginTop: 56, fontSize: 84, fontWeight: 800, lineHeight: 1.05, textTransform: "uppercase" }}>
           Engineered to impress.
         </div>
-        <div style={{ marginTop: 20, fontSize: 52, fontWeight: 700, color: "#e10600", textTransform: "uppercase" }}>
+        <div style={{ marginTop: 20, fontSize: 52, fontWeight: 700, color: "#c90010", textTransform: "uppercase" }}>
           Bring your brand to life.
         </div>
         <div style={{ marginTop: 40, fontSize: 28, color: "#c9ced6" }}>
