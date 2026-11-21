@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Analytics from "@/components/Analytics";
 import MotionProvider from "@/components/ui/MotionProvider";
 import JsonLd from "@/components/ui/JsonLd";
+import Toaster from "@/components/ui/Toaster";
 import { SITE } from "@/lib/site";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
@@ -108,6 +109,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="main">{children}</main>
           <Footer />
           <WhatsAppButton />
+          <Toaster />
         </MotionProvider>
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <Analytics />
