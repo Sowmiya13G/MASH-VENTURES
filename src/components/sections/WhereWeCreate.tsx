@@ -20,7 +20,7 @@ export default function WhereWeCreate() {
     <section className="bg-charcoal py-24 sm:py-32" aria-labelledby="where-title">
       <div className={container}>
         <SectionHeading id="where-title" eyebrow="Where We Show Up" title="Where We Create Experiences" />
-        <ul className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 sm:mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
           {places.map((p, i) => {
             const Icon = p.icon;
             return (
@@ -28,15 +28,15 @@ export default function WhereWeCreate() {
                 <Reveal delay={(i % 4) * 0.07} className="h-full">
                   <Link
                     href={`/contact?type=${encodeURIComponent(p.type)}#book`}
-                    className="group flex h-full min-h-40 flex-col justify-between rounded-2xl border border-white/10 bg-gunmetal/60 p-6 transition hover:border-mash-red/70 hover:bg-gunmetal sm:p-8"
+                    className="group flex h-full min-h-36 sm:min-h-40 flex-col justify-between rounded-2xl border border-white/10 bg-gunmetal/60 p-5 sm:p-6 lg:p-8 transition hover:border-mash-red/70 hover:bg-gunmetal"
                   >
                     <Icon
                       className="text-chrome/60 transition group-hover:text-mash-red"
-                      size={30}
+                      size={28}
                       strokeWidth={1.5}
                       aria-hidden="true"
                     />
-                    <span className="mt-8 text-base font-bold uppercase tracking-wide sm:text-lg">{p.label}</span>
+                    <span className="mt-6 sm:mt-8 text-sm sm:text-base font-bold uppercase tracking-wide lg:text-lg">{p.label}</span>
                   </Link>
                 </Reveal>
               </li>

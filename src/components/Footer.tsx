@@ -9,15 +9,15 @@ export default function Footer() {
   const wa = whatsappLink();
   return (
     <footer className="border-t border-white/10 bg-black">
-      <div className={`${container} grid gap-12 py-16 md:grid-cols-4`}>
-        <div className="md:col-span-1">
+      <div className={`${container} grid gap-10 py-12 sm:py-16 sm:grid-cols-2 lg:grid-cols-4`}>
+        <div className="sm:col-span-2 lg:col-span-1">
           <MashLogo variant="full" size="md" />
-          <p className="mt-4 text-sm uppercase leading-relaxed tracking-widest text-chrome/70 font-tech">
+          <p className="mt-4 text-xs sm:text-sm uppercase leading-relaxed tracking-widest text-chrome/70 font-tech">
             {SITE.taglinePrimary}
             <br />
             {SITE.taglineSecondary}
           </p>
-          <p className="mt-5 text-sm leading-relaxed text-chrome/60">
+          <p className="mt-4 sm:mt-5 text-xs sm:text-sm leading-relaxed text-chrome/60 max-w-sm">
             Robotic character experiences for brands, malls, corporates and celebrations across India.
           </p>
         </div>

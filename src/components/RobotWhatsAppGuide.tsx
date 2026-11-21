@@ -229,11 +229,11 @@ export default function RobotWhatsAppGuide() {
 
   return (
     <>
-      {/* 1. Global Viewport Floor Patrol Container (pointer-events-none so it never blocks page clicks) */}
+      {/* 1. Global Viewport Floor Patrol Container (hidden on mobile to prevent blocking content/forms) */}
       <div
         ref={containerRef}
         aria-hidden="true"
-        className="pointer-events-none fixed bottom-0 left-0 right-0 z-40 h-48 overflow-visible select-none"
+        className="pointer-events-none fixed bottom-0 left-0 right-0 z-40 h-48 overflow-visible select-none hidden md:block"
       >
         {/* The Full-Body 3D Rigged Bumblebee Model */}
         <div
@@ -266,7 +266,7 @@ export default function RobotWhatsAppGuide() {
             setIsDismissed(false);
           }}
           title="Wake up Bumblebee Scout"
-          className="fixed bottom-24 right-8 z-[101] flex h-8 w-8 items-center justify-center rounded-full bg-[#e5a00d] text-black shadow-lg border border-black hover:scale-110 transition animate-bounce"
+          className="fixed bottom-24 right-8 z-[101] hidden md:flex h-8 w-8 items-center justify-center rounded-full bg-[#e5a00d] text-black shadow-lg border border-black hover:scale-110 transition animate-bounce"
         >
           <Sparkles size={16} />
         </button>

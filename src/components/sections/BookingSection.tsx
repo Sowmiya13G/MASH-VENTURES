@@ -16,19 +16,19 @@ type BookingSectionProps = {
 export default function BookingSection({ defaultCharacter = "", defaultExperience = "", asPage = false }: BookingSectionProps) {
   const wa = whatsappLink();
   return (
-    <section id="book" className="scroll-mt-20 bg-black py-24 sm:py-32" aria-labelledby="book-title">
-      <div className={`${container} grid gap-14 lg:grid-cols-[0.8fr_1.2fr]`}>
+    <section id="book" className="scroll-mt-20 bg-black py-16 sm:py-24 lg:py-32" aria-labelledby="book-title">
+      <div className={`${container} grid gap-10 lg:gap-14 lg:grid-cols-[0.8fr_1.2fr]`}>
         <div>
           <SectionHeading id="book-title" eyebrow="Book an Experience" title="Request Your Experience" as={asPage ? "h1" : "h2"}>
             Tell us about your venue, date and audience. We will come back with availability and a tailored experience.
           </SectionHeading>
           {wa && (
-            <a href={wa} target="_blank" rel="noopener noreferrer" className={`${btnGhost} mt-8`}>
+            <a href={wa} target="_blank" rel="noopener noreferrer" className={`${btnGhost} mt-6 sm:mt-8`}>
               <MessageCircle size={18} aria-hidden="true" /> Chat on WhatsApp
             </a>
           )}
         </div>
-        <div className="rounded-2xl border border-white/10 bg-gunmetal/60 p-6 sm:p-10">
+        <div className="rounded-2xl border border-white/10 bg-gunmetal/60 p-4 sm:p-8 lg:p-10">
           <BookingForm defaultCharacter={defaultCharacter} defaultExperience={defaultExperience} whatsappHref={wa} />
         </div>
       </div>

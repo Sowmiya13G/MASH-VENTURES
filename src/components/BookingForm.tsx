@@ -11,8 +11,8 @@ import { experiences } from "@/data/experiences";
 import { btnPrimary } from "@/components/ui/styles";
 
 const inputClass =
-  "w-full rounded-lg border border-white/15 bg-black/40 px-4 py-3.5 text-base text-white placeholder:text-chrome/40 transition focus:border-mash-red focus:outline-none aria-[invalid=true]:border-mash-red";
-const labelClass = "mb-2 block text-xs font-semibold uppercase tracking-widest text-chrome/70 font-tech";
+  "w-full rounded-lg border border-white/15 bg-black/40 px-3.5 sm:px-4 py-3 sm:py-3.5 text-base text-white placeholder:text-chrome/40 transition focus:border-mash-red focus:outline-none aria-[invalid=true]:border-mash-red [&>option]:bg-zinc-900 [&>option]:text-white";
+const labelClass = "mb-1.5 sm:mb-2 block text-xs font-semibold uppercase tracking-widest text-chrome/70 font-tech";
 
 type FieldProps = {
   id: keyof EnquiryInput;

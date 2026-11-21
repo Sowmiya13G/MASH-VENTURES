@@ -42,10 +42,10 @@ export default function MashLogo({
 
   // Size preset classes
   const sizeClasses = {
-    sm: variant === "icon" ? "w-8 h-auto" : "w-36 h-auto",
-    md: variant === "icon" ? "w-11 h-auto" : "w-48 sm:w-56 h-auto",
-    lg: variant === "icon" ? "w-16 h-auto" : "w-72 sm:w-80 h-auto",
-    hero: variant === "icon" ? "w-24 h-auto" : "w-full max-w-[580px] h-auto",
+    sm: variant === "icon" ? "w-8 h-auto" : "w-32 sm:w-36 h-auto",
+    md: variant === "icon" ? "w-10 sm:w-11 h-auto" : "w-36 sm:w-44 md:w-52 h-auto",
+    lg: variant === "icon" ? "w-14 sm:w-16 h-auto" : "w-64 sm:w-72 md:w-80 h-auto",
+    hero: variant === "icon" ? "w-20 sm:w-24 h-auto" : "w-full max-w-[580px] h-auto",
   }[size];
 
   const content = (

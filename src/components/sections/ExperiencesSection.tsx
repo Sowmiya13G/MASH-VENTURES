@@ -61,7 +61,7 @@ export default function ExperiencesSection({ headingLevel = "h2" }: { headingLev
   return (
     <section
       id="experiences"
-      className="relative scroll-mt-20 overflow-hidden bg-black py-24 sm:py-32"
+      className="relative scroll-mt-20 overflow-hidden bg-black py-16 sm:py-24 lg:py-32"
       aria-labelledby="experiences-title"
     >
       {/* Background Cybernetic Ambient Accents */}
@@ -148,7 +148,7 @@ export default function ExperiencesSection({ headingLevel = "h2" }: { headingLev
                 >
                   <div
                     onMouseMove={handleMouseMove}
-                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-charcoal/90 p-7 sm:p-8 backdrop-blur-sm transition-all duration-500 hover:border-mash-red/60 hover:shadow-[0_12px_40px_rgba(225,6,0,0.12)] hover:-translate-y-1"
+                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-charcoal/90 p-5 sm:p-7 lg:p-8 backdrop-blur-sm transition-all duration-500 hover:border-mash-red/60 hover:shadow-[0_12px_40px_rgba(225,6,0,0.12)] hover:-translate-y-1"
                   >
                     {/* Interactive Cursor Spotlight Glow */}
                     <div
@@ -249,7 +249,7 @@ export default function ExperiencesSection({ headingLevel = "h2" }: { headingLev
         </m.ul>
 
         {/* Bottom Call-to-Action Console Banner */}
-        <div className="mt-14 rounded-2xl border border-white/10 bg-gradient-to-r from-gunmetal via-charcoal to-gunmetal p-8 sm:p-10 backdrop-blur-md">
+        <div className="mt-12 sm:mt-14 rounded-2xl border border-white/10 bg-gradient-to-r from-gunmetal via-charcoal to-gunmetal p-5 sm:p-8 lg:p-10 backdrop-blur-md">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="max-w-2xl">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyber-gold font-tech">

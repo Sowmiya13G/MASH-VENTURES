@@ -102,17 +102,17 @@ export default function TransformationCanvas() {
   return (
     <div
       ref={containerRef}
-      className="relative flex h-[520px] w-full max-w-2xl flex-col items-center justify-center rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.07] via-charcoal/90 to-black/95 p-3 sm:h-[580px] sm:p-5 shadow-2xl backdrop-blur-md overflow-hidden select-none"
+      className="relative flex h-[380px] sm:h-[480px] lg:h-[540px] w-full max-w-2xl flex-col items-center justify-center rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.07] via-charcoal/90 to-black/95 p-3 sm:p-5 shadow-2xl backdrop-blur-md overflow-hidden select-none touch-pan-y"
     >
       {/* Top Cybernetic Status Bar */}
-      <div className="absolute top-4 inset-x-6 z-10 flex items-center justify-between border-b border-white/10 pb-3 text-[11px] font-bold tracking-widest uppercase font-tech">
-        <div className="flex items-center gap-2 text-chrome/80">
-          <Shield size={14} className="text-mash-red" />
-          <span>CYBER-CHASSIS SPEC // MK-IX</span>
+      <div className="absolute top-3 sm:top-4 inset-x-3 sm:inset-x-6 z-10 flex items-center justify-between border-b border-white/10 pb-2.5 sm:pb-3 text-[10px] sm:text-[11px] font-bold tracking-widest uppercase font-tech">
+        <div className="flex items-center gap-1.5 sm:gap-2 text-chrome/80">
+          <Shield size={13} className="text-mash-red shrink-0" />
+          <span className="truncate max-w-[130px] sm:max-w-none">CYBER-CHASSIS // MK-IX</span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-mash-red animate-ping" />
-          <span className="text-mash-red font-mono font-bold tracking-wider">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-mash-red animate-ping" />
+          <span className="text-mash-red font-mono font-bold tracking-wider text-[9px] sm:text-[11px]">
             {getStatusText()}
           </span>
         </div>
@@ -159,10 +159,10 @@ export default function TransformationCanvas() {
       </div>
 
       {/* Interactive Controls & Scrubbing Interface */}
-      <div className="relative z-10 mt-auto w-full max-w-xl rounded-2xl border border-white/10 bg-black/80 p-3.5 backdrop-blur-xl shadow-lg">
+      <div className="relative z-10 mt-auto w-full max-w-xl rounded-xl sm:rounded-2xl border border-white/10 bg-black/80 p-2.5 sm:p-3.5 backdrop-blur-xl shadow-lg">
         {/* Progress Slider */}
-        <div className="mb-3 flex flex-col gap-1.5">
-          <div className="flex items-center justify-between text-[10px] font-bold tracking-widest text-chrome/70 uppercase font-tech">
+        <div className="mb-2 sm:mb-3 flex flex-col gap-1 sm:gap-1.5">
+          <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-bold tracking-widest text-chrome/70 uppercase font-tech">
             <span>0% Supercar</span>
             <span className="font-mono text-mash-red">{Math.round(progress * 100)}% Displaced</span>
             <span>100% Robot</span>
@@ -183,12 +183,12 @@ export default function TransformationCanvas() {
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-white/10">
-          <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 pt-1 border-t border-white/10">
+          <div className="flex items-center gap-1 sm:gap-1.5">
             <button
               type="button"
               onClick={handleModeCar}
-              className={`rounded-lg px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition font-tech ${
+              className={`rounded-lg px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition font-tech ${
                 progress <= 0.1 ? "bg-white text-black shadow-md" : "bg-white/10 text-white/80 hover:bg-white/20"
               }`}
             >
@@ -197,7 +197,7 @@ export default function TransformationCanvas() {
             <button
               type="button"
               onClick={handleModeRobot}
-              className={`rounded-lg px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition font-tech ${
+              className={`rounded-lg px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition font-tech ${
                 progress >= 0.9 ? "bg-white text-black shadow-md" : "bg-white/10 text-white/80 hover:bg-white/20"
               }`}
             >
@@ -208,23 +208,23 @@ export default function TransformationCanvas() {
           <button
             type="button"
             onClick={handleReplay}
-            className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-mash-red to-mash-red-dark px-4 py-2 text-xs font-bold uppercase tracking-widest text-white shadow-[0_0_24px_rgba(225,6,0,0.5)] transition hover:brightness-110 active:scale-95 font-tech"
+            className="flex items-center gap-1 sm:gap-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-mash-red to-mash-red-dark px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest text-white shadow-[0_0_24px_rgba(225,6,0,0.5)] transition hover:brightness-110 active:scale-95 font-tech"
           >
-            {isTransforming ? <RotateCcw size={13} className="animate-spin" /> : <Play size={13} />}
-            <span>Replay Transform</span>
+            {isTransforming ? <RotateCcw size={12} className="animate-spin" /> : <Play size={12} />}
+            <span>Replay</span>
           </button>
 
           <button
             type="button"
             onClick={() => setOverclock(!overclock)}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition font-tech ${
+            className={`flex items-center gap-1 sm:gap-1.5 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition font-tech ${
               overclock
                 ? "bg-cyber-cyan/30 text-cyber-cyan border border-cyber-cyan/50 shadow-[0_0_15px_rgba(0,210,255,0.4)]"
                 : "bg-white/10 text-chrome/70 hover:bg-white/20"
             }`}
             title="Overclock core reactor and projector optics"
           >
-            <Zap size={13} className={overclock ? "animate-bounce text-cyber-cyan" : ""} />
+            <Zap size={12} className={overclock ? "animate-bounce text-cyber-cyan" : ""} />
             <span>Boost</span>
           </button>
         </div>

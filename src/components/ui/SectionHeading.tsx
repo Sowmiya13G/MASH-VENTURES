@@ -23,7 +23,7 @@ export default function SectionHeading({
   return (
     <Reveal className={align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
       {eyebrow && <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-mash-red">{eyebrow}</p>}
-      <Tag id={id} className="text-4xl font-bold uppercase leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+      <Tag id={id} className="text-3xl font-bold uppercase leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl xl:text-6xl break-words">
         {title}
       </Tag>
       {children && <div className="mt-5 text-base leading-relaxed text-chrome/80 sm:text-lg">{children}</div>}

@@ -1,0 +1,51 @@
+---
+description: "Strict responsive UI/UX rules for mobile, tablet, and laptop viewports."
+globs: "**/*.{tsx,jsx,ts,js,css}"
+alwaysApply: true
+---
+
+# MASH VENTURES — Responsive UI/UX Standards (Laptop & Mobile)
+
+## 1. Viewport Hierarchy & Breakpoints
+
+Every component must be designed and verified across the full responsive spectrum:
+- **Small Mobile**: `320px – 389px` (iPhone SE, Galaxy A series)
+- **Standard Mobile**: `390px – 480px` (iPhone 14/15/16, Pixel, Galaxy S)
+- **Tablet / Phablet**: `481px – 767px`
+- **Tablet Landscape / iPad**: `768px – 1023px`
+- **Standard Laptop**: `1024px – 1440px` (MacBook Air/Pro, ThinkPad, Dell XPS)
+- **Large Desktop**: `1441px – 1920px+`
+
+---
+
+## 2. Strict Commandments for Responsive UI
+
+### A. Zero Horizontal Overflow
+1. Root containers must never cause horizontal scrolling on viewports down to `320px`.
+2. Use `overflow-x-clip` or `overflow-x-hidden` on sections with ambient glow orbs or extended backgrounds.
+3. Never use fixed pixel widths on layout containers (e.g. `w-[600px]`); always pair with max-width: `w-full max-w-[600px]`.
+
+### B. Mobile Touch-Action & 3D Canvas Safe Scrolling
+1. On mobile viewports, 3D canvases must never trap vertical page scroll. Always set `touch-action: pan-y` on container elements or restrict gesture zones.
+2. Floating mascots or interactive widgets (like `RobotWhatsAppGuide`) must hide or tuck away on screens `< 768px` so they never cover form fields, buttons, or legal copy.
+3. All interactive targets (buttons, links, icon toggles, inputs) must maintain a minimum touch target size of **44 × 44 px** on mobile.
+
+### C. Typography Scaling
+1. Display headings (`font-display`, Orbitron) must gracefully step down on mobile:
+   - Primary `h1`: `text-3xl sm:text-5xl lg:text-6xl xl:text-7xl`
+   - Section `h2`: `text-2xl sm:text-4xl lg:text-5xl`
+   - Card `h3`: `text-lg sm:text-xl`
+2. Add `break-words` and `leading-[1.05]` to avoid letter-clipping or container overflow with wide uppercase characters.
+
+### D. Padding & Margin Rhythm
+1. Mobile padding (`px-4 sm:px-6 lg:px-8`):
+   - Do not use `p-10` or `p-8` directly on mobile containers as it robs narrow screens of content area. Use `p-4 sm:p-6 lg:p-10`.
+2. Grid layout transitions:
+   - 4-column cards: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`
+   - 3-column cards: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`
+   - 5-column feature grids: `grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5`
+
+### E. Form & Modal UX on Mobile
+1. Inputs must maintain `text-base` (`16px`) font-size to prevent iOS Safari from automatically zooming into the page on focus.
+2. Toast notifications must sit at `top-20` on desktop/laptop, and auto-adjust to `w-[calc(100%-2rem)]` on mobile, staying completely clear of floating action buttons.
+

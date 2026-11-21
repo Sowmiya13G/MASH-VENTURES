@@ -66,12 +66,15 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <Link href="/contact#book" className={clsx(btnPrimary, "hidden px-5 py-2.5 sm:inline-flex")}>
+          <Link
+            href="/contact#book"
+            className="hidden md:inline-flex items-center justify-center gap-2 rounded-full bg-mash-red px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-mash-red-dark hover:shadow-[0_0_32px_rgb(225_6_0/0.45)] active:scale-[0.98] shrink-0"
+          >
             Book an Experience
           </Link>
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-md border border-white/20 lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-md border border-white/20 lg:hidden shrink-0"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"

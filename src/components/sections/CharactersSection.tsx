@@ -13,7 +13,7 @@ export default function CharactersSection({ asPage = false }: { asPage?: boolean
   return (
     <section
       id="characters"
-      className="scroll-mt-20 bg-charcoal py-24 sm:py-32"
+      className="scroll-mt-20 bg-charcoal py-16 sm:py-24 lg:py-32"
       aria-labelledby={asPage ? undefined : "characters-title"}
       aria-label={asPage ? "Our robotic characters" : undefined}
     >
@@ -24,7 +24,7 @@ export default function CharactersSection({ asPage = false }: { asPage?: boolean
           </SectionHeading>
         )}
 
-        <ul className={`${asPage ? "" : "mt-14"} grid gap-6 sm:grid-cols-2 lg:grid-cols-4`}>
+        <ul className={`${asPage ? "" : "mt-10 sm:mt-14"} grid gap-6 sm:grid-cols-2 lg:grid-cols-4`}>
           {characters.map((c, i) => (
             <li key={c.slug}>
               <Reveal delay={i * 0.08} className="h-full">
@@ -39,9 +39,9 @@ export default function CharactersSection({ asPage = false }: { asPage?: boolean
                     <CharacterVisual character={c} imageOnly priority={c.available} />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-gunmetal via-transparent to-transparent" />
                   </div>
-                  <div className="flex flex-1 flex-col p-6">
+                  <div className="flex flex-1 flex-col p-4 sm:p-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-2xl font-bold uppercase tracking-wide">{c.name}</h3>
+                      <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-wide">{c.name}</h3>
                       {c.available ? (
                         <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold tracking-widest text-emerald-400 uppercase shadow-[0_0_12px_rgba(52,211,153,0.3)]">
                           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -53,9 +53,9 @@ export default function CharactersSection({ asPage = false }: { asPage?: boolean
                         </span>
                       )}
                     </div>
-                    <p className="mt-2 text-sm leading-relaxed text-chrome/70">{c.role}</p>
+                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-chrome/70">{c.role}</p>
                     {c.available ? (
-                      <div className="mt-6 flex flex-col gap-3">
+                      <div className="mt-5 sm:mt-6 flex flex-col gap-2.5 sm:gap-3">
                         <Link href={`/characters/${c.slug}`} className={`${btnGhost} px-4 py-3 text-xs`}>
                           Discover Character
                         </Link>
@@ -64,7 +64,7 @@ export default function CharactersSection({ asPage = false }: { asPage?: boolean
                         </Link>
                       </div>
                     ) : (
-                      <div className="mt-6 flex items-center gap-2">
+                      <div className="mt-5 sm:mt-6 flex items-center gap-2">
                         <span className="relative flex h-2 w-2">
                           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mash-red opacity-75" />
                           <span className="relative inline-flex h-2 w-2 rounded-full bg-mash-red" />
