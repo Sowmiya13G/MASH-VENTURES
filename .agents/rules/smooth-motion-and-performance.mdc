@@ -1,6 +1,6 @@
 ---
-description: Zero-lag performance, buttery smooth animations, and gentle transitions for 3D cinematic WebGL and Next.js.
-globs: ["**/*.{ts,tsx,js,jsx,css}"]
+description: "Zero-lag performance, buttery smooth animations, and gentle transitions for 3D cinematic WebGL and Next.js."
+globs: "*"
 alwaysApply: true
 ---
 
@@ -107,4 +107,3 @@ alwaysApply: true
   - Always register touch and wheel listeners with `{ passive: true }` so browser scrolling is never blocked on the main thread.
 - **Respect Accessibility**:
   - Respect `prefers-reduced-motion: reduce`. When active, disable camera wobble, particle motion, and parallax, providing immediate, clean cross-fades instead.
-

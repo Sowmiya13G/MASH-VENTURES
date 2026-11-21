@@ -1,3 +1,8 @@
+---
+name: threejs-cinematic-experience
+description: "Specialized technical runbook for implementing high-performance, dark cinematic 3D web experiences in Next.js using Three.js, React Three Fiber, Drei, and GSAP. Powers the futuristic yellow sports car to humanoid robot transformation with zero lag."
+---
+
 # Skill: Three.js Cinematic Experience & Transformation Engine
 
 ## Purpose
@@ -153,4 +158,3 @@ scene.traverse((obj) => {
 renderer.dispose();
 renderer.forceContextLoss();
 ```
-

@@ -1,3 +1,8 @@
+---
+name: 3d-cinematic-website
+description: "Production-grade implementation playbook for engineering a dark, futuristic cinematic website featuring interactive 3D robot characters with zero lag, 60-120 FPS, and smooth transitions."
+---
+
 # Skill: Next.js 3D Cinematic Robot Website
 
 ## Purpose

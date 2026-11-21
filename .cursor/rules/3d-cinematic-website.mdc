@@ -1,6 +1,6 @@
 ---
-description: Project rules for a premium Next.js website with original cinematic 3D robot characters, WebGL, smooth animations, and zero-lag performance.
-globs: ["**/*"]
+description: "Project rules for a premium Next.js website with original cinematic 3D robot characters, WebGL, smooth animations, and zero-lag performance."
+globs: "*"
 alwaysApply: true
 ---
 
@@ -35,4 +35,3 @@ alwaysApply: true
 - Implement in small, verifiable milestones (first ensure the hero is 100% stable before expanding).
 - Clean up all event listeners, animation frames, and resize observers upon component unmount.
 - Always run `npm run typecheck` and `npm run lint` before reporting milestones as complete.
-

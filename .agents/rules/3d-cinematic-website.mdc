@@ -1,6 +1,6 @@
 ---
-description: Project rules for a premium Next.js website with original cinematic 3D robot characters, WebGL, smooth animations, and zero-lag performance.
-globs: ["**/*"]
+description: "Project rules for a premium Next.js website with original cinematic 3D robot characters, WebGL, smooth animations, and zero-lag performance."
+globs: "*"
 alwaysApply: true
 ---
 

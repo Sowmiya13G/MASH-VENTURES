@@ -1,6 +1,6 @@
 ---
-description: Visual quality, design standards, and strict motion rules for MASH VENTURES.
-globs: ["**/*"]
+description: "Visual quality, design standards, and strict motion rules for MASH VENTURES."
+globs: "*"
 alwaysApply: true
 ---
 
@@ -60,4 +60,3 @@ alwaysApply: true
 10. **Keep the Website Premium and Clean**:
     - Prioritize generous negative space, crisp typography, and high contrast ratios for maximum prestige.
     - Avoid cluttered templates; maintain the feel of an elite creative technology studio.
-
