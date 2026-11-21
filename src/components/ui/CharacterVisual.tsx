@@ -24,14 +24,14 @@ export default function CharacterVisual({
   if (character.hasImage) {
     if (imageOnly) {
       return (
-        <div className="relative h-full w-full flex items-center justify-center p-3 bg-gunmetal">
+        <div className="relative h-full w-full flex items-center justify-center bg-gunmetal overflow-hidden">
           <Image
             src={`/characters/${character.slug}.png`}
             alt={`${character.name} robotic character by MASH VENTURES`}
             fill
             sizes={sizes}
             priority={priority}
-            className="object-contain object-center transition duration-500 group-hover:scale-105 drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
+            className="object-cover object-center transition duration-500 group-hover:scale-105"
           />
         </div>
       );
@@ -65,6 +65,7 @@ export default function CharacterVisual({
               viewMode === "photo" ? "bg-white text-black shadow-sm" : "text-chrome/70 hover:text-white"
             }`}
           >
+            <Box size={11} className="hidden" />
             <ImageIcon size={11} />
             <span>Photo</span>
           </button>
@@ -75,14 +76,14 @@ export default function CharacterVisual({
           <RobotCharacterWrapper slug={character.slug} />
         ) : (
           /* Photo Render Mode */
-          <div className="relative h-full w-full flex items-center justify-center p-3 bg-gunmetal">
+          <div className="relative h-full w-full flex items-center justify-center bg-gunmetal overflow-hidden">
             <Image
               src={`/characters/${character.slug}.png`}
               alt={`${character.name} robotic character by MASH VENTURES`}
               fill
               sizes={sizes}
               priority={priority}
-              className="object-contain object-center transition duration-500 group-hover:scale-105 drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
+              className="object-cover object-center transition duration-500 group-hover:scale-105"
             />
           </div>
         )}

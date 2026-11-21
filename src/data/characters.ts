@@ -21,20 +21,20 @@ export type Character = {
 export const characters: Character[] = [
   {
     slug: "striker",
-    name: "Striker",
+    name: "Bumblebee",
     role: "The bold, energetic crowd favourite",
     summary: "A vivid, high-energy robotic character that pulls crowds in and keeps them smiling.",
     description: [
-      "Striker is the character people see first and remember longest. Bold colours, sharp mechanical detailing and playful movement make it a natural centre of attention in busy malls, expos and family venues.",
-      "Built for interaction, Striker greets guests, poses for photographs and brings a burst of futuristic energy to promotions and celebrations.",
+      "Bumblebee is the character people see first and remember longest. Bold yellow armour, sharp mechanical detailing and energetic movement make it a natural centre of attention in busy malls, expos, brand launches and family venues.",
+      "Built for interaction, Bumblebee greets guests, poses for memorable photographs and brings a burst of futuristic energy to promotions and celebrations.",
     ],
     idealFor: ["Shopping mall footfall drives", "Family and kids' events", "Birthdays and celebrations", "Retail launches and festivals"],
-    highlights: ["High-energy crowd engagement", "Photo-friendly design", "Meet-and-greet ready"],
+    highlights: ["High-energy crowd engagement", "Iconic yellow armour design", "Meet-and-greet ready"],
     available: true,
     hasImage: true,
-    seoTitle: "Striker | Energetic Robotic Character for Malls & Events",
+    seoTitle: "Bumblebee | Energetic Robotic Character for Malls & Events",
     seoDescription:
-      "Meet Striker, MASH VENTURES' bold, high-energy robotic character for mall promotions, family events, launches and celebrations across India.",
+      "Meet Bumblebee, MASH VENTURES' bold, high-energy robotic character for mall promotions, family events, launches and celebrations across India.",
   },
   {
     slug: "titan",

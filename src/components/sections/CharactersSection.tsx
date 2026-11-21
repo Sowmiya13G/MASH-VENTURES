@@ -42,7 +42,12 @@ export default function CharactersSection({ asPage = false }: { asPage?: boolean
                   <div className="flex flex-1 flex-col p-6">
                     <div className="flex items-center justify-between">
                       <h3 className="text-2xl font-bold uppercase tracking-wide">{c.name}</h3>
-                      {!c.available && (
+                      {c.available ? (
+                        <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold tracking-widest text-emerald-400 uppercase shadow-[0_0_12px_rgba(52,211,153,0.3)]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          AVAILABLE
+                        </span>
+                      ) : (
                         <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-bold tracking-widest text-chrome/60 uppercase">
                           SOON
                         </span>

@@ -8,7 +8,7 @@ import { breadcrumbJsonLd, buildMetadata, itemListJsonLd } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "Robotic Characters for Events, Malls & Brands",
   description:
-    "Meet Striker, Titan and Colossus, MASH VENTURES' larger-than-life robotic characters for malls, launches, corporate events and celebrations across India.",
+    "Meet Bumblebee, Titan and Colossus, MASH VENTURES' larger-than-life robotic characters for malls, launches, corporate events and celebrations across India.",
   path: "/characters",
   keywords: ["robotic characters India", "robot characters for events", "robot mascot hire"],
 });

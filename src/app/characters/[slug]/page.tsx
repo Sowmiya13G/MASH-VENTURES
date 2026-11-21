@@ -49,7 +49,15 @@ export default async function CharacterPage({ params }: { params: Promise<Params
             </div>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-mash-red">{c.role}</p>
+              <div className="flex items-center gap-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-mash-red">{c.role}</p>
+                {c.available && (
+                  <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold tracking-widest text-emerald-400 uppercase shadow-[0_0_12px_rgba(52,211,153,0.3)]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    AVAILABLE NOW
+                  </span>
+                )}
+              </div>
               <h1 className="mt-4 text-5xl font-bold uppercase tracking-tight sm:text-7xl">{c.name}</h1>
               <p className="mt-6 text-xl leading-relaxed text-chrome">{c.summary}</p>
               <div className="mt-6 space-y-4 leading-relaxed text-chrome/75">
