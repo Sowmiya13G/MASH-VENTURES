@@ -1,13 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
   --color-mash-red: #e10600;
   --color-mash-red-dark: #a80400;
+  --color-cyber-gold: #f59e0b;
+  --color-cyber-cyan: #00d2ff;
   --color-chrome: #c9ced6;
   --color-gunmetal: #1c1f24;
   --color-charcoal: #0b0c0e;
-  --font-sans: "Space Grotesk Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Rajdhani", "Space Grotesk Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Orbitron", "Rajdhani", sans-serif;
+  --font-tech: "Rajdhani", monospace, sans-serif;
 }
 
 html {
@@ -20,6 +24,11 @@ body {
   color: #fff;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
 }
 
 ::selection {
@@ -48,76 +57,79 @@ body {
 
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.55; transform: scale(1); }
-  50% { opacity: 0.9; transform: scale(1.08); }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 6s ease-in-out infinite;
+  50% { opacity: 0.95; transform: scale(1.08); }
 }
 
 @keyframes scan {
   0% { transform: translateY(-100%); }
-  100% { transform: translateY(400%); }
+  100% { transform: translateY(100vh); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .animate-scan {
-  animation: scan 5s linear infinite;
+  animation: scan 10s linear infinite;
 }
 
-/* CSS-only entrance animation: runs at first paint, no JavaScript needed (better LCP). */
+/* Subtle entrance fade-up for hero and above-the-fold elements */
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .fade-up {
-  animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: var(--d, 0s);
 }
 
+/* HUD Scanning line for futuristic UI elements */
 @keyframes hud-scan {
   0% { transform: translateY(-100%); opacity: 0; }
-  30% { opacity: 0.7; }
-  70% { opacity: 0.7; }
-  100% { transform: translateY(200%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
 }
 
 .animate-hud-scan {
-  animation: hud-scan 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: hud-scan 3.5s ease-in-out infinite;
 }
 
+/* Cybernetic subtle glow pulse */
 @keyframes cyber-pulse {
-  0%, 100% {
-    filter: drop-shadow(0 0 15px rgba(225, 6, 0, 0.4)) drop-shadow(0 0 35px rgba(225, 6, 0, 0.2));
-  }
-  50% {
-    filter: drop-shadow(0 0 25px rgba(225, 6, 0, 0.8)) drop-shadow(0 0 60px rgba(225, 6, 0, 0.45));
-  }
+  0%, 100% { box-shadow: 0 0 15px rgba(225, 6, 0, 0.2), inset 0 0 15px rgba(225, 6, 0, 0.1); }
+  50% { box-shadow: 0 0 25px rgba(225, 6, 0, 0.45), inset 0 0 20px rgba(225, 6, 0, 0.2); }
 }
 
 .animate-cyber-pulse {
   animation: cyber-pulse 4s ease-in-out infinite;
 }
 
+/* High-tech logo metallic shimmer sweep */
 @keyframes logo-shimmer {
-  0% { transform: translateX(-150%) skewX(-20deg); }
-  50%, 100% { transform: translateX(200%) skewX(-20deg); }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 .animate-logo-shimmer {
   animation: logo-shimmer 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-.animate-float-slow {
-  animation: float-slow 5s ease-in-out infinite;
-}
-
+/* Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
   .animate-pulse-glow, .animate-scan, .fade-up, .animate-hud-scan, .animate-cyber-pulse, .animate-logo-shimmer, .animate-float-slow { animation: none; }
 }
