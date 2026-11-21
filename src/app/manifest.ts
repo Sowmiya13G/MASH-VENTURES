@@ -13,8 +13,8 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ["entertainment", "technology", "events", "business"],
     icons: [
       {
-        src: "/icon",
-        sizes: "32x32",
+        src: "/mash-icon-transparent.png",
+        sizes: "265x209",
         type: "image/png",
       },
       {

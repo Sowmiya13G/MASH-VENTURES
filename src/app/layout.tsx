@@ -41,6 +41,13 @@ export const metadata: Metadata = {
   publisher: SITE.name,
   formatDetection: { email: false, address: false, telephone: false },
   alternates: { canonical: SITE.url },
+  icons: {
+    icon: [
+      { url: "/mash-icon-transparent.png", type: "image/png" },
+    ],
+    shortcut: "/mash-icon-transparent.png",
+    apple: "/mash-icon-transparent.png",
+  },
   robots: {
     index: true,
     follow: true,
@@ -83,6 +90,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-IN" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/mash-icon-transparent.png" type="image/png" />
+        <link rel="shortcut icon" href="/mash-icon-transparent.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/mash-icon-transparent.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>

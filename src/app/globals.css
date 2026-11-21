@@ -19,6 +19,33 @@ html {
   background: var(--color-charcoal);
 }
 
+/* Futuristic Dark Cinematic Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0c0e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #22262e;
+  border-radius: 9999px;
+  border: 2px solid #0b0c0e;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e10600;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #22262e #0b0c0e;
+}
+
 body {
   background: var(--color-charcoal);
   color: #fff;
