@@ -10,18 +10,46 @@ type PageSeo = {
   noindex?: boolean;
 };
 
+const DEFAULT_KEYWORDS = [
+  "robotic character experiences",
+  "robot characters for events India",
+  "robotic mascots hire",
+  "brand activation robots",
+  "mall activation robot India",
+  "product launch entertainment",
+  "corporate event robot entertainment",
+  "animatronic robots India",
+  "MASH VENTURES",
+  "transforming robot experiences",
+];
+
 /** Builds consistent per-page metadata: canonical, Open Graph and Twitter. */
 export function buildMetadata({ title, description, path, image, keywords, noindex }: PageSeo): Metadata {
   const url = absoluteUrl(path);
-  const ogImage = image ?? "/opengraph-image";
-  // Don't append the brand again when the title already contains it.
+  const ogImage = image ?? "/mash-ventures-banner.jpg";
   const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
+
   return {
-    title,
+    metadataBase: new URL(SITE.url),
+    title: fullTitle,
     description,
-    keywords,
-    alternates: { canonical: url },
-    robots: noindex ? { index: false, follow: false } : undefined,
+    keywords: keywords ? [...keywords, ...DEFAULT_KEYWORDS] : DEFAULT_KEYWORDS,
+    alternates: {
+      canonical: url,
+    },
+    robots: noindex
+      ? { index: false, follow: false }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
+        },
     openGraph: {
       type: "website",
       url,
@@ -29,7 +57,15 @@ export function buildMetadata({ title, description, path, image, keywords, noind
       title: fullTitle,
       description,
       locale: "en_IN",
-      images: [{ url: ogImage, width: 1200, height: 630, alt: `${SITE.name} robotic character experiences` }],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${SITE.name} robotic character experiences`,
+          type: "image/jpeg",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
@@ -46,19 +82,39 @@ export function organizationJsonLd() {
     "@type": "Organization",
     "@id": `${SITE.url}/#organization`,
     name: SITE.name,
+    legalName: "MASH VENTURES",
     url: SITE.url,
-    logo: absoluteUrl("/logo.svg"),
+    // Google Rich Snippets strictly requires high-res PNG/JPG logo with min 112x112px
+    logo: {
+      "@type": "ImageObject",
+      url: absoluteUrl("/mash-logo-transparent.png"),
+      width: 962,
+      height: 302,
+    },
+    image: absoluteUrl("/mash-ventures-banner.jpg"),
     slogan: `${SITE.taglinePrimary} ${SITE.taglineSecondary}`,
     description: SITE.description,
     email: SITE.email,
     ...(SITE.phone ? { telephone: SITE.phone } : {}),
-    areaServed: { "@type": "Country", name: "India" },
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "IN",
+      addressRegion: SITE.region,
+      addressLocality: SITE.city,
+    },
+    areaServed: [
+      { "@type": "Country", name: "India" },
+      { "@type": "AdministrativeArea", name: "Tamil Nadu" },
+      { "@type": "AdministrativeArea", name: "Karnataka" },
+      { "@type": "AdministrativeArea", name: "Maharashtra" },
+      { "@type": "AdministrativeArea", name: "Delhi NCR" },
+    ],
     knowsAbout: [
-      "Robotic characters",
-      "Brand activations",
-      "Mall experiences",
-      "Product launch entertainment",
-      "Interactive character entertainment",
+      "Robotic characters for events",
+      "Experiential brand activations",
+      "Mall entertainment spectacles",
+      "Product launch reveals",
+      "Interactive mecha character entertainment",
     ],
     ...(sameAsLinks().length ? { sameAs: sameAsLinks() } : {}),
     contactPoint: [

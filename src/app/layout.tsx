@@ -53,23 +53,40 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     title: "MASH VENTURES | Robotic Character Experiences in India",
     description: SITE.description,
+    images: [
+      {
+        url: "/mash-ventures-banner.jpg",
+        width: 1200,
+        height: 630,
+        alt: "MASH VENTURES - Robotic Character Experiences in India",
+        type: "image/jpeg",
+      },
+      {
+        url: "/mash-logo.png",
+        width: 600,
+        height: 600,
+        alt: "MASH VENTURES Logo",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "MASH VENTURES | Robotic Character Experiences in India",
     description: SITE.description,
+    images: ["/mash-ventures-banner.jpg"],
   },
   ...(SITE.gscVerification ? { verification: { google: SITE.gscVerification } } : {}),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN">
+    <html lang="en-IN" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="min-h-screen antialiased">
+      <body className="min-h-screen antialiased" suppressHydrationWarning>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-mash-red focus:px-4 focus:py-2"
