@@ -23,10 +23,10 @@ export const SITE = {
   headline: "More Than Characters. Extraordinary Experiences.",
   description:
     "MASH VENTURES creates extraordinary experiences with larger-than-life robotic characters for malls, brands, corporates, exhibitions, product launches and celebrations across India.",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@mashventures.in",
-  phone: process.env.NEXT_PUBLIC_PHONE ?? "",
-  whatsapp: (process.env.NEXT_PUBLIC_WHATSAPP ?? "").replace(/\D/g, ""),
-  linkedin: process.env.NEXT_PUBLIC_LINKEDIN ?? "https://www.linkedin.com/company/mash-ventures",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "mashventuresindia@gmail.com",
+  phone: process.env.NEXT_PUBLIC_PHONE ?? "+91 90034 90627",
+  whatsapp: (process.env.NEXT_PUBLIC_WHATSAPP ?? "919003490627").replace(/\D/g, ""),
+  linkedin: process.env.NEXT_PUBLIC_LINKEDIN ?? "https://www.linkedin.com/in/mash-ventures-529792446",
   instagram: process.env.NEXT_PUBLIC_INSTAGRAM ?? "https://www.instagram.com/mashventures",
   gaId: process.env.NEXT_PUBLIC_GA_ID ?? "",
   gscVerification: process.env.NEXT_PUBLIC_GSC_VERIFICATION ?? "",
@@ -52,13 +52,19 @@ export function absoluteUrl(path = "/") {
   return `${SITE.url}${cleanPath}`;
 }
 
-export function whatsappLink(message = "Hi MASH VENTURES, I'd like to enquire about a robotic character experience.") {
-  const digits = (SITE.whatsapp || "").replace(/\D/g, "");
-  if (digits && digits.length >= 10 && !digits.includes("X")) {
-    return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
-  }
-  // Opens WhatsApp with the pre-filled enquiry message even if a specific phone number is not configured in .env
-  return `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+export const DEFAULT_WHATSAPP_MESSAGE = `🤖 HELLO, MASH VENTURES!
+
+ROBOTIC EXPERIENCE REQUEST INITIATED.
+EVENT MODE: ACTIVATED.
+HUMAN INTERACTION LEVEL: MAXIMUM.
+
+Please share your available robotic characters, event packages, and booking details.
+
+AWAITING TRANSMISSION... ⚡`;
+
+export function whatsappLink(message = DEFAULT_WHATSAPP_MESSAGE) {
+  const digits = (SITE.whatsapp || "919003490627").replace(/\D/g, "");
+  return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(message)}`;
 }
 
 export function sameAsLinks() {

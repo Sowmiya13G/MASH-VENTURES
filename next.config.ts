@@ -13,6 +13,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["framer-motion"],
   poweredByHeader: false,
   compress: true,
   reactStrictMode: true,

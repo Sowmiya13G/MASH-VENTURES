@@ -11,15 +11,31 @@ export default function CharacterVisual({
   priority = false,
   sizes = "(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw",
   default3D = true,
+  imageOnly = false,
 }: {
   character: Character;
   priority?: boolean;
   sizes?: string;
   default3D?: boolean;
+  imageOnly?: boolean;
 }) {
-  const [viewMode, setViewMode] = useState<"3d" | "photo">(default3D ? "3d" : "photo");
+  const [viewMode, setViewMode] = useState<"3d" | "photo">(default3D && !imageOnly ? "3d" : "photo");
 
   if (character.hasImage) {
+    if (imageOnly) {
+      return (
+        <div className="relative h-full w-full flex items-center justify-center p-3 bg-gunmetal">
+          <Image
+            src={`/characters/${character.slug}.png`}
+            alt={`${character.name} robotic character by MASH VENTURES`}
+            fill
+            sizes={sizes}
+            priority={priority}
+            className="object-contain object-center transition duration-500 group-hover:scale-105 drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
+          />
+        </div>
+      );
+    }
     return (
       <div className="relative h-full w-full">
         {/* View Mode Toggle Pill */}

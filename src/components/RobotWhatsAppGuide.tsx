@@ -1,29 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { MessageCircle, Sparkles, X, ChevronRight } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { whatsappLink } from "@/lib/site";
-
-// Rotating high-tech callout messages
-const CALLOUT_MESSAGES = [
-  "Looking to bring mechas to your event? Chat with us on WhatsApp!",
-  "Get instant pricing & custom robot availability on WhatsApp!",
-  "Deploy Striker, Titan or Colossus for your brand launch!",
-  "Tap here to connect directly with the MASH engineering team!",
-];
 
 export default function RobotWhatsAppGuide() {
   const [mounted, setMounted] = useState(false);
-  const [messageIndex, setMessageIndex] = useState(0);
   const [isDismissed, setIsDismissed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   // Animation & state refs (all GPU transforms, zero layout reflows)
   const containerRef = useRef<HTMLDivElement>(null);
   const robotRef = useRef<HTMLDivElement>(null);
-  const pointerBeamRef = useRef<SVGLineElement>(null);
-  const pulseRingRef = useRef<HTMLDivElement>(null);
-  const speechBubbleRef = useRef<HTMLDivElement>(null);
 
   // Mechanical kinematic limb refs
   const leftLegRef = useRef<SVGGElement>(null);
@@ -58,7 +46,7 @@ export default function RobotWhatsAppGuide() {
   const lastFrameTime = useRef<number>(0);
   const rafId = useRef<number>(0);
 
-  const href = whatsappLink("Hi MASH VENTURES, I saw the mecha scout on your website and would like to chat about booking a robotic character experience!");
+  const href = whatsappLink();
 
   useEffect(() => {
     setMounted(true);
@@ -84,14 +72,14 @@ export default function RobotWhatsAppGuide() {
     const windowWidth = typeof window !== "undefined" ? window.innerWidth : 1200;
     const isMobile = windowWidth < 680;
 
-    // The WhatsApp button is fixed at `right: 20px` with width 56px.
+    // The WhatsApp button is fixed at `right: 24px` with width 56px.
     // The target parking stop for the robot to point at the button:
     // On desktop: ~135px to the left of the screen right edge (leaving comfortable space before the button).
     // On mobile: ~105px to the left of the button.
     const buttonZoneX = windowWidth - (isMobile ? 120 : 155);
     const patrolLeftX = isMobile ? Math.max(20, buttonZoneX - 90) : Math.max(50, windowWidth * 0.22);
 
-    // If user hovers, override state to pointing & speaking
+    // If user hovers, override state to pointing
     if (isHovered) {
       state.pointingArmProgress = Math.min(1.0, state.pointingArmProgress + delta * 5.0);
       state.facing = 1;
@@ -112,7 +100,6 @@ export default function RobotWhatsAppGuide() {
             state.x = buttonZoneX;
             state.mode = "POINTING_AT_BUTTON";
             state.stateTimer = 7.5; // Stay pointing for 7.5 seconds
-            setMessageIndex((prev) => (prev + 1) % CALLOUT_MESSAGES.length);
           }
           break;
         }
@@ -154,7 +141,6 @@ export default function RobotWhatsAppGuide() {
           state.pointingArmProgress = 0;
           state.stateTimer -= delta;
 
-          // Head / torso scan oscillation
           if (state.stateTimer <= 0) {
             // Done scanning; walk back to point at the WhatsApp button again!
             state.mode = "WALKING_TO_TARGET";
@@ -166,7 +152,7 @@ export default function RobotWhatsAppGuide() {
 
     // Apply kinematic transforms to DOM elements via hardware-accelerated CSS transforms
     if (robotRef.current) {
-      // Bobbing torso on walk cycle: |sin(walkCycle)| * 2.5px
+      // Bobbing torso on walk cycle: |sin(walkCycle)| * 2.4px
       const bob = Math.abs(Math.sin(state.walkCycle)) * 2.4;
       robotRef.current.style.transform = `translate3d(${state.x}px, ${-bob}px, 0) scaleX(${state.facing})`;
     }
@@ -188,10 +174,9 @@ export default function RobotWhatsAppGuide() {
 
     // Right arm (Pointing arm):
     // When walking: swings slightly.
-    // When pointing: smoothly elevates to 48deg pointing toward the WhatsApp button!
+    // When pointing: smoothly elevates to -48deg pointing toward the WhatsApp button!
     if (rightArmRef.current) {
       const walkSwing = Math.sin(state.walkCycle) * 20;
-      // In pointing mode, arm extends up-forward at -48 degrees
       const targetPointAngle = -48;
       const currentArmAngle = (1 - state.pointingArmProgress) * walkSwing + state.pointingArmProgress * targetPointAngle;
       rightArmRef.current.style.transform = `rotate(${currentArmAngle}deg)`;
@@ -203,45 +188,6 @@ export default function RobotWhatsAppGuide() {
       visorRef.current.style.opacity = `${Math.min(1.0, visorPulse)}`;
     }
 
-    // Holographic targeting laser / beam connecting hand to WhatsApp button
-    if (pointerBeamRef.current) {
-      if (state.pointingArmProgress > 0.35 && !isDismissed) {
-        const handX = state.facing === 1 ? state.x + 64 : state.x + 16;
-        const handY = 58; // In h-28 container coordinate system
-        const targetX = windowWidth - 48;
-        const targetY = 64; // Center of WhatsApp icon
-
-        pointerBeamRef.current.setAttribute("x1", `${handX}`);
-        pointerBeamRef.current.setAttribute("y1", `${handY}`);
-        pointerBeamRef.current.setAttribute("x2", `${targetX}`);
-        pointerBeamRef.current.setAttribute("y2", `${targetY}`);
-        pointerBeamRef.current.style.opacity = `${Math.min(1.0, (state.pointingArmProgress - 0.35) * 1.8)}`;
-      } else {
-        pointerBeamRef.current.style.opacity = "0";
-      }
-    }
-
-    // WhatsApp button attention ring
-    if (pulseRingRef.current) {
-      if (state.pointingArmProgress > 0.6) {
-        pulseRingRef.current.style.opacity = "1";
-        pulseRingRef.current.style.transform = "scale(1.28)";
-      } else {
-        pulseRingRef.current.style.opacity = "0";
-        pulseRingRef.current.style.transform = "scale(1.0)";
-      }
-    }
-
-    // Holographic Speech Bubble visibility
-    if (speechBubbleRef.current) {
-      const showBubble = (state.pointingArmProgress > 0.7 || isHovered) && !isDismissed;
-      speechBubbleRef.current.style.opacity = showBubble ? "1" : "0";
-      speechBubbleRef.current.style.transform = showBubble
-        ? `translate3d(${Math.max(16, state.x - 70)}px, 0, 0) scale(1)`
-        : `translate3d(${Math.max(16, state.x - 70)}px, 10px, 0) scale(0.94)`;
-      speechBubbleRef.current.style.pointerEvents = showBubble ? "auto" : "none";
-    }
-
     rafId.current = requestAnimationFrame(animate);
   }, [isDismissed, isHovered]);
 
@@ -251,7 +197,6 @@ export default function RobotWhatsAppGuide() {
     // Check reduced motion
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
-      // Park neatly at pointing zone without patrolling
       animState.current.x = window.innerWidth - 150;
       animState.current.mode = "POINTING_AT_BUTTON";
       animState.current.pointingArmProgress = 1.0;
@@ -283,25 +228,6 @@ export default function RobotWhatsAppGuide() {
         aria-hidden="true"
         className="pointer-events-none fixed bottom-0 left-0 right-0 z-40 h-28 overflow-visible select-none"
       >
-        {/* Holographic Laser Pointer connecting Robot Arm -> WhatsApp Button */}
-        <svg
-          className="absolute inset-0 h-full w-full overflow-visible pointer-events-none"
-          style={{ filter: "drop-shadow(0 0 6px #00f0ff)" }}
-        >
-          <line
-            ref={pointerBeamRef}
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="0"
-            stroke="#00f0ff"
-            strokeWidth="2.5"
-            strokeDasharray="5 4"
-            className="transition-opacity duration-300"
-            style={{ opacity: 0 }}
-          />
-        </svg>
-
         {/* The Animated Robotic Mecha Scout */}
         <div
           ref={robotRef}
@@ -313,7 +239,6 @@ export default function RobotWhatsAppGuide() {
           className={`pointer-events-auto absolute bottom-4 left-0 flex h-24 w-20 cursor-pointer flex-col items-center justify-end transition-opacity duration-300 ${
             isDismissed ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
-          title="Click to chat with MASH VENTURES on WhatsApp!"
         >
           {/* Ground Soft Contact Shadow */}
           <div className="absolute -bottom-1 h-2.5 w-14 rounded-full bg-black/60 blur-[3px]" />
@@ -472,58 +397,9 @@ export default function RobotWhatsAppGuide() {
             </g>
           </svg>
         </div>
-
-        {/* 2. Cyberpunk Holographic Speech / Callout Bubble */}
-        <div
-          ref={speechBubbleRef}
-          className="fixed bottom-28 left-0 z-50 max-w-[280px] rounded-xl border border-[#00f0ff]/40 bg-[#0c0e12]/95 p-3.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)] backdrop-blur-md transition-all duration-300 md:max-w-[320px]"
-          style={{ opacity: 0, transform: "translate3d(0, 10px, 0) scale(0.95)" }}
-        >
-          {/* Header row */}
-          <div className="flex items-center justify-between border-b border-white/10 pb-2">
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00f0ff] opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00f0ff]" />
-              </span>
-              <span className="font-mono text-[11px] font-bold tracking-wider text-[#00f0ff] uppercase">
-                STRIKER SCOUT
-              </span>
-            </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsDismissed(true);
-              }}
-              className="text-zinc-400 hover:text-white transition-colors"
-              aria-label="Minimize scout"
-            >
-              <X size={14} />
-            </button>
-          </div>
-
-          {/* Dialogue Message */}
-          <p className="mt-2 text-xs font-medium leading-relaxed text-zinc-200">
-            {CALLOUT_MESSAGES[messageIndex]}
-          </p>
-
-          {/* Call to action button */}
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2.5 flex items-center justify-between rounded-lg bg-emerald-500/15 px-2.5 py-1.5 text-xs font-semibold text-emerald-400 border border-emerald-500/30 transition hover:bg-emerald-500 hover:text-black"
-          >
-            <span className="flex items-center gap-1.5">
-              <MessageCircle size={14} />
-              Start WhatsApp Chat
-            </span>
-            <ChevronRight size={14} />
-          </a>
-        </div>
       </div>
 
-      {/* 3. Tiny Mecha Mascot Restore Badge if dismissed */}
+      {/* 2. Tiny Mecha Mascot Restore Badge if dismissed */}
       {isDismissed && (
         <button
           onClick={(e) => {
@@ -531,7 +407,6 @@ export default function RobotWhatsAppGuide() {
             e.stopPropagation();
             setIsDismissed(false);
           }}
-          title="Wake up Bumblebee Scout"
           className="fixed bottom-24 right-8 z-[101] flex h-8 w-8 items-center justify-center rounded-full bg-[#e5a00d] text-black shadow-lg border border-black hover:scale-110 transition animate-bounce"
         >
           <Sparkles size={16} />
