@@ -1,0 +1,103 @@
+name: Deploy to GoDaddy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy to GoDaddy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Typecheck & Linter
+        run: |
+          npm run typecheck
+          npm run lint
+
+      - name: Build Standalone Next.js Application
+        env:
+          NEXT_PUBLIC_SITE_URL: "https://www.mashventures.in"
+          NEXT_PUBLIC_CONTACT_EMAIL: ${{ secrets.NEXT_PUBLIC_CONTACT_EMAIL || 'mashventuresindia@gmail.com' }}
+          NEXT_PUBLIC_PHONE: ${{ secrets.NEXT_PUBLIC_PHONE || '+919003490627' }}
+          NEXT_PUBLIC_WHATSAPP: ${{ secrets.NEXT_PUBLIC_WHATSAPP || '919003490627' }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONTACT_TO_EMAIL: ${{ secrets.CONTACT_TO_EMAIL || 'mashventuresindia@gmail.com' }}
+          CONTACT_FROM_EMAIL: ${{ secrets.CONTACT_FROM_EMAIL || 'MASH VENTURES <onboarding@resend.dev>' }}
+        run: npm run build
+
+      - name: Assemble Deployment Package
+        run: |
+          echo "Assembling standalone production artifacts..."
+          # Next.js standalone requires public and .next/static folders to be copied into standalone
+          mkdir -p .next/standalone/.next/static
+          mkdir -p .next/standalone/public
+          mkdir -p .next/standalone/tmp
+          
+          # Copy static and public assets
+          cp -r .next/static/* .next/standalone/.next/static/
+          cp -r public/* .next/standalone/public/
+
+          # Create cPanel Passenger restart trigger
+          touch .next/standalone/tmp/restart.txt
+          echo "Deployment timestamp: $(date)" > .next/standalone/tmp/restart.txt
+
+          # If an environment file secret is supplied, write it
+          if [ -n "${{ secrets.ENV_PRODUCTION }}" ]; then
+            echo "${{ secrets.ENV_PRODUCTION }}" > .next/standalone/.env.production
+          fi
+
+      # -----------------------------------------------------------
+      # DEPLOYMENT OPTION 1: SFTP / FTP Deploy (GoDaddy cPanel / Web Hosting)
+      # -----------------------------------------------------------
+      - name: Deploy to GoDaddy via FTP/SFTP
+        if: ${{ secrets.GODADDY_FTP_SERVER != '' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.GODADDY_FTP_SERVER }}
+          username: ${{ secrets.GODADDY_FTP_USERNAME }}
+          password: ${{ secrets.GODADDY_FTP_PASSWORD }}
+          port: ${{ secrets.GODADDY_FTP_PORT || 21 }}
+          protocol: ${{ secrets.GODADDY_FTP_PROTOCOL || 'ftp' }}
+          local-dir: .next/standalone/
+          server-dir: ${{ secrets.GODADDY_REMOTE_PATH || '/' }}
+          dangerous-clean-slate: false
+
+      # -----------------------------------------------------------
+      # DEPLOYMENT OPTION 2: SSH Deploy (GoDaddy VPS / Cloud Server)
+      # -----------------------------------------------------------
+      - name: Deploy to GoDaddy via SSH (VPS / Dedicated)
+        if: ${{ secrets.GODADDY_SSH_HOST != '' }}
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.GODADDY_SSH_HOST }}
+          username: ${{ secrets.GODADDY_SSH_USER }}
+          key: ${{ secrets.GODADDY_SSH_KEY }}
+          password: ${{ secrets.GODADDY_SSH_PASSWORD }}
+          port: ${{ secrets.GODADDY_SSH_PORT || 22 }}
+          script: |
+            cd ${{ secrets.GODADDY_REMOTE_PATH || '~/mash-ventures' }}
+            git pull origin main
+            npm ci --omit=dev
+            npm run build
+            touch tmp/restart.txt
+            pm2 reload mash-ventures || pm2 start npm --name "mash-ventures" -- start || true
+
