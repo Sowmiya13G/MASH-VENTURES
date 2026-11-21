@@ -15,6 +15,7 @@ interface CategoryFilter {
   label: string;
 }
 
+
 const CATEGORIES: readonly CategoryFilter[] = [
   { id: "all", label: "All Experiences" },
   { id: "brand-retail", label: "Brand & Retail" },
@@ -107,9 +108,8 @@ export default function ExperiencesSection({ headingLevel = "h2" }: { headingLev
                 aria-selected={isActive}
                 type="button"
                 onClick={() => setActiveCategory(cat.id)}
-                className={`relative rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mash-red ${
-                  isActive ? "text-white" : "text-chrome/60 hover:text-white"
-                }`}
+                className={`relative rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mash-red ${isActive ? "text-white" : "text-chrome/60 hover:text-white"
+                  }`}
               >
                 {isActive && (
                   <m.span
