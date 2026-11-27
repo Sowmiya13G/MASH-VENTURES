@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+﻿import type { NextConfig } from "next";
 
 const isPreview = process.env.VERCEL_ENV === "preview" || (Boolean(process.env.VERCEL_ENV) && process.env.VERCEL_ENV !== "production");
 
@@ -55,3 +55,10 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+if (process.env.NODE_ENV === "development") {
+  import("@opennextjs/cloudflare").then((m) =>
+    m.initOpenNextCloudflareForDev()
+  );
+}
+
