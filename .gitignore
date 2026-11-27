@@ -10,3 +10,11 @@ next-env.d.ts
 .DS_Store
 # next-agents-md
 .next-docs/
+
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
