@@ -75,7 +75,9 @@ export default function BookingForm({
 
   useEffect(() => {
     // Computed on the client so the statically generated page never has a stale "today".
-    setMinDate(new Date().toISOString().split("T")[0]);
+    queueMicrotask(() => {
+      setMinDate(new Date().toISOString().split("T")[0]);
+    });
 
     // Pre-select from query parameters such as /contact?character=titan or /contact?type=Brand%20Activations.
     const params = new URLSearchParams(window.location.search);

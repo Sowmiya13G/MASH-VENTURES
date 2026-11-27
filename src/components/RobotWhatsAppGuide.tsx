@@ -56,11 +56,11 @@ export default function RobotWhatsAppGuide() {
   const href = whatsappLink();
 
   useEffect(() => {
-    setMounted(true);
+    queueMicrotask(() => setMounted(true));
   }, []);
 
   // Main high-performance animation loop (Zero-hang, delta clamped, hardware-accelerated transforms)
-  const animate = useCallback((timestamp: number) => {
+  const animate = useCallback(function loop(timestamp: number) {
     if (!lastFrameTime.current) {
       lastFrameTime.current = timestamp;
     }
@@ -70,7 +70,7 @@ export default function RobotWhatsAppGuide() {
     lastFrameTime.current = timestamp;
 
     if (document.hidden || isDismissed) {
-      rafId.current = requestAnimationFrame(animate);
+      rafId.current = requestAnimationFrame(loop);
       return;
     }
 

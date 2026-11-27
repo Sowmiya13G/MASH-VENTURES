@@ -3,7 +3,6 @@ import type { CSSProperties } from "react";
 import { ChevronDown, Sparkles } from "lucide-react";
 import { SITE } from "@/lib/site";
 import { btnGhost, btnPrimary, container } from "@/components/ui/styles";
-import HeroTransformationWrapper from "@/components/three/TransformationHero/HeroTransformationWrapper";
 
 /** Staggers the CSS entrance animation: <p className="fade-up" style={delay(0.2)}> */
 const delay = (seconds: number) => ({ "--d": `${seconds}s` }) as CSSProperties;

@@ -25,7 +25,7 @@ export default function Navbar() {
 
   // Close the mobile menu after navigating.
   useEffect(() => {
-    setOpen(false);
+    queueMicrotask(() => setOpen(false));
   }, [pathname]);
 
   // Close the mobile menu with the Escape key.

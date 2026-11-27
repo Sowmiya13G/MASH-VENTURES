@@ -10,12 +10,15 @@ export default function TransformationCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0.0); // 0.0 = Supercar, 1.0 = Winged Mecha Robot
   const progressRef = useRef(progress);
-  progressRef.current = progress;
+
+  useEffect(() => {
+    progressRef.current = progress;
+  }, [progress]);
 
   const [isTransforming, setIsTransforming] = useState(false);
   const [overclock, setOverclock] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [hasAutoTriggered, setHasAutoTriggered] = useState(false);
+  const hasAutoTriggeredRef = useRef(false);
 
   // Smooth cinematic transformation animator
   const runTransformation = useCallback((targetProgress: number, durationMs = 2600) => {
@@ -45,15 +48,15 @@ export default function TransformationCanvas() {
   // AUTOMATIC TRANSFORMATION TRIGGER:
   // Starts in Supercar mode for 1.2s, then automatically transforms into the Humanoid Robot
   useEffect(() => {
-    if (hasAutoTriggered) return;
-    setHasAutoTriggered(true);
+    if (hasAutoTriggeredRef.current) return;
+    hasAutoTriggeredRef.current = true;
 
     const autoTimer = setTimeout(() => {
       runTransformation(1.0, 2800);
     }, 1200);
 
     return () => clearTimeout(autoTimer);
-  }, [hasAutoTriggered, runTransformation]);
+  }, [runTransformation]);
 
   // Zero-Waste: Pause render loop when scrolled offscreen
   useEffect(() => {
