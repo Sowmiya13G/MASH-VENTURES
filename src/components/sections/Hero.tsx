@@ -73,13 +73,13 @@ export default function Hero() {
               </Link>
             </div>
           </div>
-
+          {/* 
           <div
             style={delay(0.2)}
             className="fade-up mt-6 flex justify-center lg:mt-0 lg:col-span-6 lg:justify-end w-full"
           >
             <HeroTransformationWrapper />
-          </div>
+          </div> */}
         </div>
       </div>
 
